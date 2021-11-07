@@ -3,9 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Database\Libs\BlueprintTrait;
 
 class CreateNews extends Migration
 {
+    use BlueprintTrait;
+
     /**
      * Run the migrations.
      *
@@ -18,7 +21,7 @@ class CreateNews extends Migration
             $table->string('title', 255);
             $table->text('content');
             $table->tinyInteger('status')->default(0);
-            $table->timestamps();
+            $this->dateTimes($table);
         });
     }
 

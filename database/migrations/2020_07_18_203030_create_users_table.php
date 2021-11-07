@@ -3,9 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Database\Libs\BlueprintTrait;
 
 class CreateUsersTable extends Migration
 {
+    use BlueprintTrait;
+
     /**
      * Run the migrations.
      *
@@ -20,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('access_token')->comment('アクセストークン');
             $table->string('name')->comment('名前');
             $table->string('del_flg')->comment('削除フラグ');
-            $table->timestamps();
+            $this->dateTimes($table);
         });
     }
 
