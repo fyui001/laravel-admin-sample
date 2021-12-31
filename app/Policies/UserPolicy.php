@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 
 class UserPolicy
 {
@@ -15,7 +15,7 @@ class UserPolicy
      */
     public function create(AdminUser $user): bool
     {
-      
+
         if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
             return true;
         }
@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function update(AdminUser $user, AdminUser $editUser): bool
     {
-      
+
         if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
             return true;
         }

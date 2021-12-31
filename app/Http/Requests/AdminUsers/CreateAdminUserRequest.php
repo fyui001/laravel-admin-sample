@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\AdminUsers;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use App\Http\Requests\Request as AppRequest;
 
 class CreateAdminUserRequest extends AppRequest

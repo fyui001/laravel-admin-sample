@@ -68,7 +68,7 @@ return [
     'providers' => [
         'admin_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\AdminUser::class,
+            'model' => Infra\EloquentModels\AdminUser::class,
         ],
 
         // 'admin_users' => [

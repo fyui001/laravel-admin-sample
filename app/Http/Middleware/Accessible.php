@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use Closure;
 use Illuminate\Support\Str;
 
@@ -72,5 +72,5 @@ class Accessible
 
         return false;
     }
-    
+
 }

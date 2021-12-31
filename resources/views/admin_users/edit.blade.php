@@ -35,11 +35,11 @@
     </div>
     <div class="form-group">
         <label for="InputRole">Role</label>
-        {{ Form::select('role', \App\Models\AdminUser::roles(), old('role', Arr::get($adminUser, 'role')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('role', \Infra\EloquentModels\AdminUser::roles(), old('role', Arr::get($adminUser, 'role')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \App\Models\AdminUser::statuses(), old('status', Arr::get($adminUser, 'status')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Infra\EloquentModels\AdminUser::statuses(), old('status', Arr::get($adminUser, 'status')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}

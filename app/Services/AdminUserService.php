@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use App\Services\Service as BaseService;
-use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\Request;
+use App\Services\Interfaces\AdminUserServiceInterface;
+use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
@@ -22,17 +23,17 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
      */
     public function getUsers(): LengthAwarePaginator
     {
-
         return AdminUser::paginate(15);
     }
 
     /**
      * Create a user.
      *
-     * @param Request $request
+     * @param CreateAdminUserRequest $request
      * @return AdminUser
+     * @throws Exception
      */
-    public function createUser(Request $request): AdminUser
+    public function createUser(CreateAdminUserRequest $request): AdminUser
     {
 
         $result = AdminUser::create([

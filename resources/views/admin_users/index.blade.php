@@ -31,8 +31,8 @@
             <td>{{ $item->id }}</td>
             <td>{{ $item->user_id }}</td>
             <td>{{ $item->name }}</td>
-            <td>{{ \App\Models\AdminUser::getRoleText($item->role) }}</td>
-            <td>{{ \App\Models\AdminUser::getStatusText($item->status) }}</td>
+            <td>{{ \Infra\EloquentModels\AdminUser::getRoleText($item->role) }}</td>
+            <td>{{ \Infra\EloquentModels\AdminUser::getStatusText($item->status) }}</td>
             <td class="td-actions text-right">
                 <a href="{{ route('admin_users.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>

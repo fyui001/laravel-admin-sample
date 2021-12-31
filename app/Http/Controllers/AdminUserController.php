@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
@@ -15,13 +15,12 @@ use Illuminate\Http\RedirectResponse;
 class AdminUserController extends AppController
 {
 
-    protected $adminUserService;
+    protected AdminUserServiceInterface $adminUserService;
 
-    public function __construct(AdminUserServiceInterface $adminUserService) {
-
+    public function __construct(AdminUserServiceInterface $adminUserService)
+    {
         parent::__construct();
         $this->adminUserService = $adminUserService;
-
     }
 
     /**
@@ -29,11 +28,10 @@ class AdminUserController extends AppController
      *
      * @return View
      */
-    public function index(): View {
-
+    public function index(): View
+    {
         $adminUsers = $this->adminUserService->getUsers();
         return view('admin_users.index', compact('adminUsers'));
-
     }
 
     /**
@@ -41,10 +39,9 @@ class AdminUserController extends AppController
      *
      * @return View
      */
-    public function create(): View {
-
+    public function create(): View
+    {
         return view('admin_users.create');
-
     }
 
     /**
@@ -53,11 +50,11 @@ class AdminUserController extends AppController
      * @param CreateAdminUserRequest $request
      * @return RedirectResponse
      */
-    public function store(CreateAdminUserRequest $request): RedirectResponse {
-
+    public function store(CreateAdminUserRequest $request): RedirectResponse
+    {
         $this->adminUserService->createUser($request);
-        return redirect(route('admin_users.index'))->with('success', 'ユーザーを保存しました');
-
+        return redirect(route('admin_users.index'))
+                ->with('success', 'ユーザーを保存しました');
     }
 
     /**
@@ -66,10 +63,9 @@ class AdminUserController extends AppController
      * @param AdminUser $adminUser
      * @return View
      */
-    public function edit(AdminUser $adminUser): View {
-
+    public function edit(AdminUser $adminUser): View
+    {
         return view('admin_users.edit', compact('adminUser'));
-
     }
 
     /**
@@ -79,11 +75,12 @@ class AdminUserController extends AppController
      * @param UpdateAdminUserRequest $request
      * @return RedirectResponse
      */
-    public function update(AdminUser $adminUser, UpdateAdminUserRequest $request): RedirectResponse {
-
+    public function update(AdminUser $adminUser, UpdateAdminUserRequest $request): RedirectResponse
+    {
         $this->adminUserService->updateUser($adminUser, $request);
-        return redirect(route('admin_users.index'))->with(['success' => 'ユーザーを編集しました']);
-
+        return redirect(route('admin_users.index'))->with([
+            'success' => 'ユーザーを編集しました'
+        ]);
     }
 
     /**
@@ -92,11 +89,12 @@ class AdminUserController extends AppController
      * @param AdminUser $adminUser
      * @return RedirectResponse
      */
-    public function destroy(AdminUser $adminUser): RedirectResponse {
-
+    public function destroy(AdminUser $adminUser): RedirectResponse
+    {
         $this->adminUserService->deleteUser($adminUser);
-        return redirect()->route('admin_users.index')->with(['success' => 'ユーザーを削除しました']);
-
+        return redirect()->route('admin_users.index')->with([
+            'success' => 'ユーザーを削除しました'
+        ]);
     }
 
 }

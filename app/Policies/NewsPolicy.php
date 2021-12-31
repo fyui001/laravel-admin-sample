@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsPolicy
@@ -18,7 +18,7 @@ class NewsPolicy
      */
     public function create(): bool
     {
-      
+
         if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
             return true;
         }
@@ -32,7 +32,7 @@ class NewsPolicy
      */
     public function update(): bool
     {
-      
+
         if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
             return true;
         }
