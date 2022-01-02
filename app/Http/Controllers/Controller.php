@@ -18,6 +18,6 @@ class Controller extends BaseController
      */
     public function __construct()
     {
-        $this->middleware(['auth:web', 'accessible']);
+        $this->middleware(['accessible']);
     }
 }

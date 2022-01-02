@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
@@ -29,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected string $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -48,6 +49,16 @@ class LoginController extends Controller
     protected function guard(): StatefulGuard
     {
         return Auth::guard('web');
+    }
+
+    /**
+     * Form for login.
+     *
+     * @return View
+     */
+    public function showLoginForm(): View
+    {
+        return view('auth.login');
     }
 
     /**

@@ -6,19 +6,19 @@ namespace App\Http\Middleware;
 
 use Domain\Common\UserRole;
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Accessible
 {
 
-    public function handle($request, Closure $next, $guard = null) {
-        // Current user is not defined
-        abort_unless(Auth::check(), 403);
+    public function handle($request, Closure $next, $guards = null) {
+        $currentUser = \Auth::user();
 
         // Current route is not one of avaiable routes
-        $accessibleRoutes = $this->getAccessibleRoutes($request->user()->role);
-        abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+        if ($currentUser) {
+            $accessibleRoutes = $this->getAccessibleRoutes($currentUser->role);
+            abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+        }
 
         return $next($request);
     }
