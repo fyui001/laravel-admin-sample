@@ -16,7 +16,7 @@ class CreateAdminUserRequest extends AppRequest
      */
     public function authorize(): bool
     {
-        return me() && me()->can('create', AdminUser::class);
+        return \Auth::guard('web')->user()->can('create', AdminUser::class);
     }
 
     /**

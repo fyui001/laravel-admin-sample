@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\AdminUsers;
 
-use Infra\EloquentModels\AdminUser;
 use App\Http\Requests\Request as AppRequest;
 
 class UpdateAdminUserRequest extends AppRequest
@@ -15,8 +14,12 @@ class UpdateAdminUserRequest extends AppRequest
      *
      * @return bool
      */
-    public function authorize(): bool {
-        return me() && me()->can('update', $this->adminUser);
+    public function authorize(): bool
+    {
+        return \Auth::guard('web')->user()->can(
+                'update',
+                \Auth::guard('web')->user()
+            );
     }
 
     /**

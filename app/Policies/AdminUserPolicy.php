@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 use Infra\EloquentModels\AdminUser;
+use Illuminate\Auth\Access\Response;
 
-class NewsPolicy
+class AdminUserPolicy
 {
-    use HandlesAuthorization;
-
     /**
-     * Determine if the current user can create news
+     * Determine if the current user can create user
      *
      * @param AdminUser $adminUser
      * @return Response
@@ -28,7 +25,7 @@ class NewsPolicy
     }
 
     /**
-     * Determine if the current user can update news
+     * Determine if the current user can update user
      *
      * @param AdminUser $adminUser
      * @return Response
