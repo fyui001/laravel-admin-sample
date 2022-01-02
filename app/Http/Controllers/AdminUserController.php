@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use Infra\EloquentModels\AdminUser;
 use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
 use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
 use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
+use Domain\AdminUser\AdminId;
+use Infra\EloquentModels\AdminUser;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -30,7 +31,7 @@ class AdminUserController extends AppController
      */
     public function index(): View
     {
-        $adminUsers = $this->adminUserService->getUsers();
+        $adminUsers = $this->adminUserService->getAdminUserPaginator();
         return view('admin_users.index', compact('adminUsers'));
     }
 
@@ -71,13 +72,15 @@ class AdminUserController extends AppController
     /**
      * Update the user.
      *
-     * @param AdminUser $adminUser
      * @param UpdateAdminUserRequest $request
      * @return RedirectResponse
      */
-    public function update(AdminUser $adminUser, UpdateAdminUserRequest $request): RedirectResponse
+    public function update(string $id, UpdateAdminUserRequest $request): RedirectResponse
     {
-        $this->adminUserService->updateUser($adminUser, $request);
+        $this->adminUserService->updateUser(
+            new AdminId((int)$id),
+            $request
+        );
         return redirect(route('admin_users.index'))->with([
             'success' => 'ユーザーを編集しました'
         ]);
@@ -89,9 +92,11 @@ class AdminUserController extends AppController
      * @param AdminUser $adminUser
      * @return RedirectResponse
      */
-    public function destroy(AdminUser $adminUser): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
-        $this->adminUserService->deleteUser($adminUser);
+        $this->adminUserService->deleteUser(
+            new AdminId((int)$id)
+        );
         return redirect()->route('admin_users.index')->with([
             'success' => 'ユーザーを削除しました'
         ]);

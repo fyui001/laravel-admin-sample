@@ -30,16 +30,16 @@
         {{ Form::password('password_confirm', ['class' => 'form-control input-sm', 'placeholder' => '']) }}
     </div>
     <div class="form-group">
-        <label for="TextareaUserName">Uesr Name</label>
+        <label for="TextareaUserName">User Name</label>
         {{ Form::text('name', old('name', $adminUser->name), ['class' => 'form-control input-sm', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputRole">Role</label>
-        {{ Form::select('role', \Infra\EloquentModels\AdminUser::roles(), old('role', Arr::get($adminUser, 'role')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('role', \Domain\Common\UserRole::getDisplayNameList(), old('role', $adminUser->role), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \Infra\EloquentModels\AdminUser::statuses(), old('status', Arr::get($adminUser, 'status')), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Domain\Common\UserStatus::getDisplayNameList(), old('status', $adminUser->status), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}
