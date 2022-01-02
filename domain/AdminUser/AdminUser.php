@@ -6,8 +6,8 @@ namespace Domain\AdminUser;
 
 use Domain\Common\HashedPassword;
 use Domain\Common\PeopleName;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 
 class AdminUser
 {
@@ -15,16 +15,16 @@ class AdminUser
     private AdminUserId $userId;
     private HashedPassword $hashedPassword;
     private PeopleName $name;
-    private UserRole $role;
-    private UserStatus $status;
+    private AdminUserRole $role;
+    private AdminUserStatus $status;
 
     public function __construct(
-        AdminId $id,
-        AdminUserId $userId,
+        AdminId         $id,
+        AdminUserId     $userId,
         ?HashedPassword $hashedPassword,
-        PeopleName $name,
-        UserRole $role,
-        UserStatus $status
+        PeopleName      $name,
+        AdminUserRole   $role,
+        AdminUserStatus $status
     ) {
         $this->id = $id;
         $this->userId = $userId;
@@ -35,20 +35,20 @@ class AdminUser
     }
 
     public static function makeDummy(
-        ?AdminId $id = null,
-        ?AdminUserId $userId,
-        ?PeopleName $name = null,
+        ?AdminId        $id = null,
+        ?AdminUserId    $userId,
+        ?PeopleName     $name = null,
         ?HashedPassword $hashedPassword = null,
-        ?UserRole $role = null,
-        ?UserStatus $status = null
+        ?AdminUserRole  $role = null,
+        ?AdminUserStatus $status = null
     ): self {
         return new self(
             $id ?? new AdminId(1),
             $userId ?? new AdminUserId('takada_yuki'),
             $hashedPassword ?? new HashedPassword('dummy'),
             $name ?? new PeopleName('高田憂希'),
-            $role ?? new UserRole(UserRole::ROLE_SYSTEM),
-        $status ?? new UserStatus(UserStatus::STATUS_VALID)
+            $role ?? new AdminUserRole(AdminUserRole::ROLE_SYSTEM),
+        $status ?? new AdminUserStatus(AdminUserStatus::STATUS_VALID)
         );
     }
 
@@ -67,12 +67,12 @@ class AdminUser
         return $this->name;
     }
 
-    public function getRole(): UserRole
+    public function getRole(): AdminUserRole
     {
         return $this->role;
     }
 
-    public function getStatus(): UserStatus
+    public function getStatus(): AdminUserStatus
     {
         return $this->status;
     }

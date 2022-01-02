@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Domain\Common\UserRole;
+use Domain\AdminUser\AdminUserRole;
 use Closure;
 use Illuminate\Support\Str;
 
@@ -32,18 +32,18 @@ class Accessible
     protected function getAccessibleRoutes(int $roleId): array {
 
         $routes = [
-            UserRole::ROLE_SYSTEM => [
+            AdminUserRole::ROLE_SYSTEM => [
                 'auth.*',
                 'admin_users.*',
                 'news.*',
                 'top_page',
             ],
-            UserRole::ROLE_ADMIN => [
+            AdminUserRole::ROLE_ADMIN => [
                 'auth.*',
                 'news.*',
                 'top_page',
             ],
-            UserRole::ROLE_USER => [
+            AdminUserRole::ROLE_USER => [
                 'auth.*',
                 'news.index',
                 'top_page',

@@ -7,23 +7,23 @@ namespace Domain\AdminUser\AdminUserRepositoryArgument;
 use Domain\AdminUser\AdminUserId;
 use Domain\Common\HashedPassword;
 use Domain\Common\PeopleName;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 
 class AdminUserArgumentForCreate
 {
     public AdminUserId $adminUserId;
     public HashedPassword $hashedPassword;
     public PeopleName $name;
-    public UserRole $role;
-    public UserStatus $status;
+    public AdminUserRole $role;
+    public AdminUserStatus $status;
 
     public function __construct(
-        AdminUserId $adminUserId,
+        AdminUserId    $adminUserId,
         HashedPassword $hashedPassword,
-        PeopleName $name,
-        UserRole $role,
-        UserStatus $status
+        PeopleName     $name,
+        AdminUserRole  $role,
+        AdminUserStatus $status
     ){
         $this->adminUserId = $adminUserId;
         $this->hashedPassword = $hashedPassword;

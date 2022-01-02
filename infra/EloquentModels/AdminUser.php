@@ -11,8 +11,8 @@ use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\Common\PeopleName;
 use Domain\Common\HashedPassword;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 
 class AdminUser extends Authenticatable implements Domainable
 {
@@ -41,8 +41,8 @@ class AdminUser extends Authenticatable implements Domainable
             new AdminUserId($this->user_id),
             new HashedPassword($this->password),
             new PeopleName($this->name),
-            new UserRole($this->role),
-            new UserStatus($this->status)
+            new AdminUserRole($this->role),
+            new AdminUserStatus($this->status)
         );
     }
 }

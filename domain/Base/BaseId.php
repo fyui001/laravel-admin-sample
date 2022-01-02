@@ -5,22 +5,18 @@ namespace Domain\Base;
 
 use Domain\Exception\InvalidArgumentException;
 
-abstract class BaseId
+abstract class BaseId extends BasePositiveIntegerValue
 {
     protected $value;
 
     public function __construct(int $value)
     {
+        parent::__construct($value);
         if ($value < 1) {
             throw new InvalidArgumentException();
         }
 
         $this->value = $value;
-    }
-
-    public function equals(BaseId $another): bool
-    {
-        return $this->value === $another->value;
     }
 
     public function rawValue(): int

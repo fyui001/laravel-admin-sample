@@ -35,11 +35,11 @@
     </div>
     <div class="form-group">
         <label for="InputRole">Role</label>
-        {{ Form::select('role', \Domain\Common\UserRole::getDisplayNameList(), old('role', $adminUser->role), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('role', \Domain\AdminUser\AdminUserRole::getDisplayNameList(), old('role', $adminUser->role), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \Domain\Common\UserStatus::getDisplayNameList(), old('status', $adminUser->status), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Domain\AdminUser\AdminUserStatus::getDisplayNameList(), old('status', $adminUser->status), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}

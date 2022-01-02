@@ -7,8 +7,8 @@ namespace Domain\AdminUser;
 use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
 use Domain\Common\HashedPassword;
 use Domain\Common\PeopleName;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminUserDomainService
@@ -32,12 +32,12 @@ class AdminUserDomainService
     }
 
     public function update(
-        AdminId $id,
-        AdminUserId $userId,
+        AdminId        $id,
+        AdminUserId    $userId,
         HashedPassword $password,
-        PeopleName $name,
-        UserRole $role,
-        UserStatus $status
+        PeopleName     $name,
+        AdminUserRole  $role,
+        AdminUserStatus $status
     ){
         $this->repository->update(
             $id,

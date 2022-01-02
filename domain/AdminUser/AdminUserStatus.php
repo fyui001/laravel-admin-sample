@@ -6,7 +6,7 @@ namespace Domain\Common;
 
 use Domain\Base\BaseEnum;
 
-class UserStatus extends BaseEnum
+class AdminUserStatus extends BaseEnum
 {
     const STATUS_INVALID = 0;
     const STATUS_VALID = 1;

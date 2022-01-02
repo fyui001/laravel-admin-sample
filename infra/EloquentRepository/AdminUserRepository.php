@@ -11,8 +11,8 @@ use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\Common\HashedPassword;
 use Domain\Common\PeopleName;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Domain\Exception\NotFoundException;
 use Infra\EloquentModels\AdminUser;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
@@ -51,12 +51,12 @@ class AdminUserRepository implements AdminUserRepositoryInterface
     }
 
     public function update(
-        AdminId $id,
-        AdminUserId $userId,
+        AdminId        $id,
+        AdminUserId    $userId,
         HashedPassword $password,
-        PeopleName $name,
-        UserRole $role,
-        UserStatus $status
+        PeopleName     $name,
+        AdminUserRole  $role,
+        AdminUserStatus $status
     ){
         $model = AdminUserModel::where('id', $id)->first();
         $model->user_id = $userId->rawValue();

@@ -8,8 +8,8 @@ use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\Common\HashedPassword;
 use Domain\Common\PeopleName;
-use Domain\Common\UserRole;
-use Domain\Common\UserStatus;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
 use App\Services\Service as BaseService;
 use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
@@ -49,8 +49,8 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
             new AdminUserId($request->input('user_id')),
             new HashedPassword(Hash::make($request->input('password'))),
             new PeopleName($request->input('name')),
-            new UserRole((int)$request->input('role')),
-            new UserStatus((int)$request->input('status'))
+            new AdminUserRole((int)$request->input('role')),
+            new AdminUserStatus((int)$request->input('status'))
         );
 
         $this->adminUserDomainService->create($adminUserRepositoryArgument);
@@ -69,8 +69,8 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
             new AdminUserId($request->input('user_id')),
             new HashedPassword(Hash::make($request->input('password'))),
             new PeopleName($request->input('name')),
-            new UserRole((int)$request->input('role')),
-            new UserStatus((int)$request->input('status'))
+            new AdminUserRole((int)$request->input('role')),
+            new AdminUserStatus((int)$request->input('status'))
         );
     }
 

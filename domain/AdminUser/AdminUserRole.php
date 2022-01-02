@@ -5,7 +5,7 @@ namespace Domain\Common;
 
 use Domain\Base\BaseEnum;
 
-class UserRole extends BaseEnum
+class AdminUserRole extends BaseEnum
 {
     const ROLE_SYSTEM = 1;
     const ROLE_ADMIN = 2;
