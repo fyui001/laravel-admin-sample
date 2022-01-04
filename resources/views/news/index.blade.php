@@ -28,17 +28,17 @@
     </thead>
     @foreach($news as $item)
         <tr>
-            <td>{{ $item->id }}</td>
-            <td>{{ $item->title }}</td>
-            <td>{{ $item->content }}</td>
-            <td>{{ \App\Models\News::getStatusText($item->status) }}</td>
+            <td>{{ $item->toDomain()->id() }}</td>
+            <td>{{ $item->toDomain()->getTitle() }}</td>
+            <td>{{ $item->toDomain()->getContent() }}</td>
+            <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
                 <a href="{{ route('news.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
                 <a href="javascript:void(0)" data-url="{{ route('news.destroy', $item) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->title }}" title="Delete">
+                   data-label="{{ $item->toDomain()->getTitle() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>

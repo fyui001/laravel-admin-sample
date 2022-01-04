@@ -1,45 +1,32 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Infra\EloquentModels;
 
 use Infra\EloquentModels\Model as AppModel;
+use Domain\Base\Domainable;
+use Domain\News\News as NewsDomain;
+use Domain\News\NewsId;
+use Domain\News\Title;
+use Domain\News\Content;
+use Domain\News\Status;
 
-class News extends AppModel
+class News extends AppModel implements Domainable
 {
     protected $table = 'news';
-
-    const STATUS_INVALID = 0;
-    const STATUS_VALID = 1;
 
     public $guarded = [
         'id',
     ];
 
-    /**
-     * Get all statuses.
-     *
-     * @return array
-     */
-    public static function statuses(): array
+    public function toDomain()
     {
-
-        return [
-            self::STATUS_INVALID => '無効',
-            self::STATUS_VALID => '有効',
-        ];
-    }
-
-    /**
-     *  Status_id to status_text.
-     *
-     * @param int $status
-     * @return string
-     */
-    public static function getStatusText(int $status): string
-    {
-
-        $statuses = self::statuses();
-        return !empty($statuses[$status]) ? $statuses[$status] : '';
+        return new NewsDomain(
+            new NewsId($this->id),
+            new Title($this->title),
+            new Content($this->content),
+            new Status($this->status)
+        );
     }
 }

@@ -14,7 +14,8 @@ class RepositoryServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-        Domain\AdminUser\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class
+        Domain\AdminUser\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class,
+        Domain\News\NewsRepository::class => EloquentRepository\NewsRepository::class,
     ];
 
     /**

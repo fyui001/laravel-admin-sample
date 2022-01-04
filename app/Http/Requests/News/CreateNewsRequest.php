@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\News;
 
-use App\Models\News;
+use Infra\EloquentModels\News;
 use App\Http\Requests\Request as AppRequest;
 
 class CreateNewsRequest extends AppRequest
@@ -16,7 +16,7 @@ class CreateNewsRequest extends AppRequest
      */
     public function authorize(): bool
     {
-        return me() && me()->can('create', News::class);
+        return \Auth::guard('web')->user()->can('create', News::class);
     }
 
     /**
@@ -46,7 +46,7 @@ class CreateNewsRequest extends AppRequest
             'content.required' => '本文は必須です',
         ];
     }
-    
+
     public function attributes(): array
     {
         return [

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Infra\EloquentModels\AdminUser;
 
 class NewsPolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine if the current user can create news

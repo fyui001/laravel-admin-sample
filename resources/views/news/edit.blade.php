@@ -16,18 +16,19 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('news.update', $news), 'method' => 'put', 'class' => 'form-horizontal']) }}
+{{ Form::open(['url' => route('news.update', $news->id()), 'method' => 'put', 'class' => 'form-horizontal']) }}
     <div class="form-group">
         <label for="InputTitle">Title</label>
-        {{ Form::text('title', old('title', $news->title), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
+        {{ Form::text('title', old('title', $news->getTitle()), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="TexteareaContent">Content</label>
-        {{ Form::textarea('content', old('content', $news->content), ['class' => 'form-control', 'rows' => 5, 'placeholder' => 'Content', 'required' => true]) }}
+        {{ Form::textarea('content', old('content', $news->getContent()), ['class' => 'form-control', 'rows' => 5, 'placeholder' => 'Content', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \App\Models\News::statuses(), old('statis', Arr::get($news, 'status')), ['class' => 'form-control', 'required' => true]) }}
+
+        {{ Form::select('status', \Domain\News\Status::getDisplayNameList(), old('status', $news->getStatus()->rawValue()), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}
