@@ -30,37 +30,25 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected string $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct() {
-
+    public function __construct()
+    {
+        parent::__construct();
         $this->middleware('guest:web')->except('logout');
-
     }
 
     /**
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard(): StatefulGuard {
-
+    protected function guard(): StatefulGuard
+    {
         return Auth::guard('web');
-
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     *
-     * @return string
-     */
-    public function username(): string {
-
-        return 'user_id';
-
     }
 
     /**
@@ -68,10 +56,9 @@ class LoginController extends Controller
      *
      * @return View
      */
-    public function showLoginForm(): View {
-
+    public function showLoginForm(): View
+    {
         return view('auth.login');
-
     }
 
     /**
@@ -80,8 +67,8 @@ class LoginController extends Controller
      * @param LoginRequest $request
      * @return RedirectResponse
      */
-    public function login(LoginRequest $request): RedirectResponse {
-
+    public function login(LoginRequest $request): RedirectResponse
+    {
         $credentials = $request->only('user_id', 'password');
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -101,7 +88,6 @@ class LoginController extends Controller
         }
 
         return redirect()->intended(route('top_page'))->with(['success' => 'Welcome!']);
-
     }
 
     /**
@@ -109,11 +95,10 @@ class LoginController extends Controller
      *
      * @return RedirectResponse
      */
-    public function logout(): RedirectResponse {
-
+    public function logout(): RedirectResponse
+    {
         Auth::logout();
         return redirect(route('auth.login'));
-
     }
 
 }

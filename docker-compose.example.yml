@@ -33,7 +33,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - ./docker/db/data:/var/lib/mysql
+      - db-store:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
@@ -42,5 +42,5 @@ services:
       - 3306:3306
 
 volumes:
-  php-vendor:
+  db-store:
   node-modules:

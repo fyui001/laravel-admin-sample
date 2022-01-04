@@ -4,38 +4,39 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Models\AdminUser;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
+use Infra\EloquentModels\AdminUser;
 
 class NewsPolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine if the current user can create news
      *
-     * @return bool
+     * @param AdminUser $adminUser
+     * @return Response
      */
-    public function create(): bool
+    public function create(AdminUser $adminUser): Response
     {
-      
-        if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
-            return true;
-        }
-        return false;
+        $adminUserDomain = $adminUser->toDomain();
+
+        return $adminUserDomain->getRole()->isSystem()
+            ? Response::allow()
+            : Response::deny('You do not own system role.');
     }
 
     /**
      * Determine if the current user can update news
      *
-     * @return bool
+     * @param AdminUser $adminUser
+     * @return Response
      */
-    public function update(): bool
+    public function update(AdminUser $adminUser): Response
     {
-      
-        if (me('role') == AdminUser::ROLE_SYSTEM || me('role') == AdminUser::ROLE_ADMIN) {
-            return true;
-        }
-        return false;
+        $adminUserDomain = $adminUser->toDomain();
+
+        return $adminUserDomain->getRole()->isSystem()
+            ? Response::allow()
+            : Response::deny('You do not own system role.');
     }
 }

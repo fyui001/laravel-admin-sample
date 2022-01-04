@@ -4,83 +4,83 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\AdminUser;
+use Domain\AdminUser\AdminId;
+use Domain\AdminUser\AdminUserId;
+use Domain\Common\HashedPassword;
+use Domain\Common\PeopleName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
+use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
 use App\Services\Service as BaseService;
+use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
 use App\Services\Interfaces\AdminUserServiceInterface;
-use App\Http\Requests\Request;
+use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
+use Domain\AdminUser\AdminUserDomainService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Exception;
 
 class AdminUserService extends BaseService implements AdminUserServiceInterface
 {
+    protected AdminUserDomainService $adminUserDomainService;
+
+    public function __construct(AdminUserDomainService $adminUserDomainService)
+    {
+        $this->adminUserDomainService = $adminUserDomainService;
+    }
 
     /**
-     * Get all users.
+     * Get all user paginator.
      *
      * @return LengthAwarePaginator
      */
-    public function getUsers(): LengthAwarePaginator
+    public function getAdminUserPaginator(): LengthAwarePaginator
     {
-
-        return AdminUser::paginate(15);
+        return $this->adminUserDomainService->getAdminUserPaginator();
     }
 
     /**
      * Create a user.
      *
-     * @param Request $request
-     * @return AdminUser
+     * @param CreateAdminUserRequest $request
      */
-    public function createUser(Request $request): AdminUser
+    public function createUser(CreateAdminUserRequest $request): void
     {
+        $adminUserRepositoryArgument = new AdminUserArgumentForCreate(
+            new AdminUserId($request->input('user_id')),
+            new HashedPassword(Hash::make($request->input('password'))),
+            new PeopleName($request->input('name')),
+            new AdminUserRole((int)$request->input('role')),
+            new AdminUserStatus((int)$request->input('status'))
+        );
 
-        $result = AdminUser::create([
-            'user_id' => $request->get('user_id'),
-            'password' => Hash::make($request->get('password')),
-            'name' => $request->get('name'),
-            'role' => $request->get('role', ''),
-            'status' => $request->get('status', ''),
-        ]);
-        if (empty($result)) {
-            throw new Exception('Failed to create');
-        }
-        return $result;
+        $this->adminUserDomainService->create($adminUserRepositoryArgument);
     }
 
     /**
      * Update the user.
      *
-     * @param AdminUser $adminUser
-     * @param Request $request
+     * @param AdminId $id
+     * @param UpdateAdminUserRequest $request
      */
-    public function updateUser(AdminUser $adminUser, Request $request)
+    public function updateUser(AdminId $id, UpdateAdminUserRequest $request): void
     {
-
-        $data = [
-            'user_id' => $request->get('user_id'),
-            'name' => $request->get('name'),
-            'role' => $request->get('role', ''),
-            'status' => $request->get('status', ''),
-        ];
-        if (!empty($request->get('password'))) {
-            $data['password'] = Hash::make($request->get('password'));
-        }
-        if (!$adminUser->update($data)) {
-            throw new Exception('Failed to update');
-        }
+        $this->adminUserDomainService->update(
+            $id,
+            new AdminUserId($request->input('user_id')),
+            new HashedPassword(Hash::make($request->input('password'))),
+            new PeopleName($request->input('name')),
+            new AdminUserRole((int)$request->input('role')),
+            new AdminUserStatus((int)$request->input('status'))
+        );
     }
 
     /**
      * Delete the user.
      *
-     * @param AdminUser $adminUser
+     * @param AdminId $id
      */
-    public function deleteUser(AdminUser $adminUser)
+    public function deleteUser(AdminId $id)
     {
-
-        if (!$adminUser->delete()) {
-            throw new Exception('Failed to delete');
-        }
+        $this->adminUserDomainService->delete($id);
     }
 }

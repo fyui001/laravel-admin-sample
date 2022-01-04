@@ -23,6 +23,16 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout')->name('auth.logout');
 });
 
+/* AdminUsers */
+Route::prefix('admin_users')->group(function() {
+    Route::get('/','AdminUserController@index')->name('admin_users.index');
+    Route::get('/create','AdminUserController@create')->name('admin_users.create');
+    Route::post('/','AdminUserController@store')->name('admin_users.store');
+    Route::get('/{adminUser}/edit','AdminUserController@edit')->where('user', '[0-9]+')->name('admin_users.edit');
+    Route::put('/{adminUser}','AdminUserController@update')->where('user', '[0-9]+')->name('admin_users.update');
+    Route::delete('/{adminUser}','AdminUserController@destroy')->where('user', '[0-9]+')->name('admin_users.destroy');
+});
+
 /* News */
 Route::prefix('news')->group(function() {
     Route::get('/', 'NewsController@index')->name('news.index');
@@ -31,14 +41,4 @@ Route::prefix('news')->group(function() {
     Route::put('/{news}', 'NewsController@update')->where('news', '[0-9]+')->name('news.update');
     Route::get('/{news}/edit', 'NewsController@edit')->where('news', '[0-9]+')->name('news.edit');
     Route::delete('/{news}', 'NewsController@destroy')->where('news', '[0-9]+')->name('news.destroy');
-});
-
-/* Users */
-Route::prefix('admin_users')->group(function() {
-    Route::get('/','AdminUserController@index')->name('admin_users.index');
-    Route::get('/create','AdminUserController@create')->name('admin_users.create');
-    Route::post('/','AdminUserController@store')->name('admin_users.store');
-    Route::get('/{adminUser}/edit','AdminUserController@edit')->where('user', '[0-9]+')->name('admin_users.edit');
-    Route::put('/{adminUser}','AdminUserController@update')->where('user', '[0-9]+')->name('admin_users.update');
-    Route::delete('/{adminUser}','AdminUserController@destroy')->where('user', '[0-9]+')->name('admin_users.destroy');
 });

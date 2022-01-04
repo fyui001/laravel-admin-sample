@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\AdminUsers;
 
-use App\Models\AdminUser;
+use Infra\EloquentModels\AdminUser;
 use App\Http\Requests\Request as AppRequest;
 
 class CreateAdminUserRequest extends AppRequest
@@ -16,7 +16,7 @@ class CreateAdminUserRequest extends AppRequest
      */
     public function authorize(): bool
     {
-        return me() && me()->can('create', AdminUser::class);
+        return \Auth::guard('web')->user()->can('create', AdminUser::class);
     }
 
     /**

@@ -8,20 +8,20 @@ use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\NewsServiceInterface;
 use App\Http\Requests\News\CreateNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
-use App\Models\News;
+use Domain\News\News;
+use Domain\News\NewsId;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class NewsController extends AppController
 {
 
-    protected $newsService;
+    protected NewsServiceInterface $newsService;
 
-    public function __construct(NewsServiceInterface $newsService) {
-
+    public function __construct(NewsServiceInterface $newsService)
+    {
         parent::__construct();
         $this->newsService = $newsService;
-
     }
 
     /**
@@ -29,11 +29,10 @@ class NewsController extends AppController
      *
      * @return View
      */
-    public function index(): View {
-
+    public function index(): View
+    {
         $news = $this->newsService->getNewsList();
         return view('news.index', compact('news'));
-
     }
 
     /**
@@ -41,10 +40,9 @@ class NewsController extends AppController
      *
      * @return View
      */
-    public function create(): View {
-
+    public function create(): View
+    {
         return view('news.create');
-
     }
 
     /**
@@ -53,24 +51,25 @@ class NewsController extends AppController
      * @param CreateNewsRequest $request
      * @return RedirectResponse
      */
-    public function store(CreateNewsRequest $request): RedirectResponse {
-
+    public function store(CreateNewsRequest $request): RedirectResponse
+    {
         if (!$this->newsService->createNews($request)) {
             return  redirect(route('news.index'))->with(['error' => 'ニュースを作成できませんでした']);
         }
 
         return redirect(route('news.index'))->with(['success' => 'ニュースを作成しました']);
-
     }
 
     /**
      * Form to update the news.
      *
-     * @param News $news
+     * @param string $id
      * @return View
      */
-    public function edit(News $news): View {
-
+    public function edit(string $id): View {
+        $news = $this->newsService->getNews(
+            new NewsId((int)$id)
+        );
         return view('news.edit', compact('news'));
 
     }
@@ -78,28 +77,31 @@ class NewsController extends AppController
     /**
      * Update the news.
      *
-     * @param News $news
+     * @param string $id
      * @param UpdateNewsRequest $request
      * @return RedirectResponse
      */
-    public function update(News $news, UpdateNewsRequest $request): RedirectResponse {
-
-        $this->newsService->updateNews($news, $request);
+    public function update(string $id, UpdateNewsRequest $request): RedirectResponse
+    {
+        $this->newsService->updateNews(
+            new NewsId((int)$id),
+            $request
+        );
         return redirect(route('news.index'))->with(['success' => 'ニュースを変更しました']);
-
     }
 
     /**
      * Delete the news.
      *
-     * @param News $news
+     * @param string $id
      * @return RedirectResponse
      */
-    public function destroy(News $news): RedirectResponse {
-
-        $this->newsService->deleteNews($news);
+    public function destroy(string $id): RedirectResponse
+    {
+        $this->newsService->deleteNews(
+            new NewsId((int)$id)
+        );
         return redirect(route('news.index'))->with(['success' => 'ニュースを削除しました']);
-
     }
 
 }

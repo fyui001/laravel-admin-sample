@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace Infra\EloquentModels;
 
 use Illuminate\Database\Eloquent\Model as EloquentModel;
+use Illuminate\Database;
 
 /**
  * This class contains shared setup, properties and methods

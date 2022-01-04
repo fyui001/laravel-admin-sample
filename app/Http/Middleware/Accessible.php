@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\AdminUser;
+use Domain\AdminUser\AdminUserRole;
 use Closure;
 use Illuminate\Support\Str;
 
 class Accessible
 {
 
-    public function handle($request, Closure $next, $guard = null) {
-
-        // Current user is not defined
-        abort_unless(me(), 403);
+    public function handle($request, Closure $next, $guards = null) {
+        $currentUser = \Auth::user();
 
         // Current route is not one of avaiable routes
-        $accessibleRoutes = $this->getAccessibleRoutes(me('role'));
-        abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+        if ($currentUser) {
+            $accessibleRoutes = $this->getAccessibleRoutes($currentUser->role);
+            abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
+        }
 
         return $next($request);
     }
@@ -32,18 +32,18 @@ class Accessible
     protected function getAccessibleRoutes(int $roleId): array {
 
         $routes = [
-            AdminUser::ROLE_SYSTEM => [
+            AdminUserRole::ROLE_SYSTEM => [
                 'auth.*',
                 'admin_users.*',
                 'news.*',
                 'top_page',
             ],
-            AdminUser::ROLE_ADMIN => [
+            AdminUserRole::ROLE_ADMIN => [
                 'auth.*',
                 'news.*',
                 'top_page',
             ],
-            AdminUser::ROLE_USER => [
+            AdminUserRole::ROLE_USER => [
                 'auth.*',
                 'news.index',
                 'top_page',
@@ -72,5 +72,5 @@ class Accessible
 
         return false;
     }
-    
+
 }

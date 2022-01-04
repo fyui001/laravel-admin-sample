@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Database\Libs\BlueprintTrait;
 
-class CraeteAdminUsersTable extends Migration
+class CreateAdminUsersTable extends Migration
 {
     use BlueprintTrait;
 
