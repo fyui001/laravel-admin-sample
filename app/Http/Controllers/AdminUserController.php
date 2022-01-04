@@ -72,6 +72,7 @@ class AdminUserController extends AppController
     /**
      * Update the user.
      *
+     * @param string $id
      * @param UpdateAdminUserRequest $request
      * @return RedirectResponse
      */
@@ -89,7 +90,7 @@ class AdminUserController extends AppController
     /**
      * Delete the user.
      *
-     * @param AdminUser $adminUser
+     * @param string $id
      * @return RedirectResponse
      */
     public function destroy(string $id): RedirectResponse
