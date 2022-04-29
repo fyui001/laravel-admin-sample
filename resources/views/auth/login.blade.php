@@ -2,7 +2,7 @@
 @section('content')
 <div class="login-box-body">
     <h4 class="login-box-msg"><strong>Please Login</strong></h4>
-    {!! Form::open(['class' => 'form', 'route' => 'auth.login.post', 'method' => 'POST']) !!}
+    {!! Form::open(['class' => 'form', 'route' => 'admin.auth.login.post', 'method' => 'POST']) !!}
         <p class="card-description text-center">
             Or Sign in with <strong>takada_yuki</strong> and the password <strong>hogehoge</strong>
         </p>

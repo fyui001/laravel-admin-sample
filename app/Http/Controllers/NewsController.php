@@ -54,10 +54,10 @@ class NewsController extends AppController
     public function store(CreateNewsRequest $request): RedirectResponse
     {
         if (!$this->newsService->createNews($request)) {
-            return  redirect(route('news.index'))->with(['error' => 'ニュースを作成できませんでした']);
+            return  redirect(route('admin.news.index'))->with(['error' => 'ニュースを作成できませんでした']);
         }
 
-        return redirect(route('news.index'))->with(['success' => 'ニュースを作成しました']);
+        return redirect(route('admin.news.index'))->with(['success' => 'ニュースを作成しました']);
     }
 
     /**
@@ -87,7 +87,7 @@ class NewsController extends AppController
             new NewsId((int)$id),
             $request
         );
-        return redirect(route('news.index'))->with(['success' => 'ニュースを変更しました']);
+        return redirect(route('admin.news.index'))->with(['success' => 'ニュースを変更しました']);
     }
 
     /**
@@ -101,7 +101,7 @@ class NewsController extends AppController
         $this->newsService->deleteNews(
             new NewsId((int)$id)
         );
-        return redirect(route('news.index'))->with(['success' => 'ニュースを削除しました']);
+        return redirect(route('admin.news.index'))->with(['success' => 'ニュースを削除しました']);
     }
 
 }

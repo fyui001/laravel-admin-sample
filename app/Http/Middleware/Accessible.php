@@ -32,21 +32,21 @@ class Accessible
     protected function getAccessibleRoutes(int $roleId): array {
 
         $routes = [
-            AdminUserRole::ROLE_SYSTEM => [
-                'auth.*',
-                'admin_users.*',
-                'news.*',
+            AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.admin_users.*',
+                'admin.news.*',
+                'admin.top_page',
+            ],
+            AdminUserRole::ROLE_ADMIN->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.news.*',
                 'top_page',
             ],
-            AdminUserRole::ROLE_ADMIN => [
-                'auth.*',
-                'news.*',
-                'top_page',
-            ],
-            AdminUserRole::ROLE_USER => [
-                'auth.*',
-                'news.index',
-                'top_page',
+            AdminUserRole::ROLE_USER->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.news.index',
+                'admin.top_page',
             ]
         ];
 

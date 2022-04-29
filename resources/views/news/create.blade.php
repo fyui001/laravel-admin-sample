@@ -7,7 +7,7 @@
         ニュース作成
     </h3>
     <div class="text-right">
-        <a href="{{ route('news.index') }}" class="btn btn-round btn-info">
+        <a href="{{ route('admin.news.index') }}" class="btn btn-round btn-info">
             <span class="oi oi-chevron-left"></span>
             ニュース一覧に戻る
         </a>
@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('news.store'), 'method' => 'post', 'class' => 'form-horizontal']) }}
+{{ Form::open(['url' => route('admin.news.store'), 'method' => 'post', 'class' => 'form-horizontal']) }}
     <div class="form-group">
         <label for="InputTitle">Title</label>
         {{ Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
