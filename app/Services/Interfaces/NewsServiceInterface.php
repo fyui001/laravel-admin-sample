@@ -15,6 +15,6 @@ interface NewsServiceInterface
     public function getNews(NewsId $id): News;
     public function getNewsList(): LengthAwarePaginator;
     public function createNews(CreateNewsRequest $request): News;
-    public function updateNews(NewsId $id, UpdateNewsRequest $request): void;
-    public function deleteNews(NewsId $id): void;
+    public function updateNews(NewsId $id, UpdateNewsRequest $request): News;
+    public function deleteNews(NewsId $id): bool;
 }

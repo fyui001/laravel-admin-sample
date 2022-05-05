@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Infra\EloquentModels;
 
 use Infra\EloquentModels\Model as AppModel;
-use Domain\Base\Domainable;
 use Domain\News\News as NewsDomain;
 use Domain\News\NewsId;
 use Domain\News\Title;
 use Domain\News\Content;
 use Domain\News\Status;
 
-class News extends AppModel implements Domainable
+class News extends AppModel
 {
     protected $table = 'news';
 
@@ -26,7 +25,7 @@ class News extends AppModel implements Domainable
             new NewsId($this->id),
             new Title($this->title),
             new Content($this->content),
-            new Status($this->status)
+            Status::tryFrom((int)$this->status),
         );
     }
 }

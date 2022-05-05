@@ -8,9 +8,10 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.1",
         "barryvdh/laravel-ide-helper": "^2.10",
         "fideloper/proxy": "^4.0",
+        "fyui001/courage": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
@@ -46,7 +47,6 @@
             "App\\": "app/",
             "Domain\\": "domain/",
             "Infra\\": "infra/",
-            "Lib\\": "lib/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Database\\Libs\\": "database/libs/"

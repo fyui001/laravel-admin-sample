@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\News;
+namespace Domain\AdminUser;
 
 use Domain\Base\BaseValue;
 
-class Content extends BaseValue
+class AdminUserName extends BaseValue
 {
 }

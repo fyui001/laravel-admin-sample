@@ -1,17 +1,37 @@
-FROM php:7.4-fpm
+## composer
+FROM composer:2.2.7 AS composer-cache
+WORKDIR /code
+# copy only composer files for caching
+COPY composer.json composer.lock /code/
+
+# install deps(without generating autoloader)
+RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
+
+## appliation
+FROM php:8.1-fpm
 
 ARG TZ
+
+COPY --from=composer:2.1 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /code
 
 RUN apt update && \
     apt full-upgrade -y && \
+    apt full-upgrade -y && \
     apt autoremove -y && \
     apt autoclean -y && \
-    apt install zip unzip
+    apt install -y \
+    g++ \
+    zip \
+    unzip \
+    locales \
+    libicu-dev \
+    libmemcached-dev \
+    unzip \
+    zlib1g-dev \
+    libonig-dev
 
-RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
-    rm composer-setup.php
-
-RUN docker-php-ext-install bcmath pdo_mysql tokenizer
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
+    docker-php-ext-install bcmath intl pdo_mysql opcache

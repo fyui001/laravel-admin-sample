@@ -54,7 +54,7 @@ class AdminUserController extends AppController
     public function store(CreateAdminUserRequest $request): RedirectResponse
     {
         $this->adminUserService->createUser($request);
-        return redirect(route('admin_users.index'))
+        return redirect(route('admin.admin_users.index'))
                 ->with('success', 'ユーザーを保存しました');
     }
 
@@ -82,7 +82,7 @@ class AdminUserController extends AppController
             new AdminId((int)$id),
             $request
         );
-        return redirect(route('admin_users.index'))->with([
+        return redirect(route('admin.admin_users.index'))->with([
             'success' => 'ユーザーを編集しました'
         ]);
     }
@@ -98,7 +98,7 @@ class AdminUserController extends AppController
         $this->adminUserService->deleteUser(
             new AdminId((int)$id)
         );
-        return redirect()->route('admin_users.index')->with([
+        return redirect()->route('admin.admin_users.index')->with([
             'success' => 'ユーザーを削除しました'
         ]);
     }

@@ -7,7 +7,7 @@
         管理ユーザー作成
     </h3>
     <div class="text-right">
-        <a href="{{ route('admin_users.index') }}" class="btn btn-round btn-info">
+        <a href="{{ route('admin.admin_users.index') }}" class="btn btn-round btn-info">
             <span class="oi oi-chevron-left"></span>
             管理ユーザー一覧に戻る
         </a>
@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin_users.store'), 'method' => 'post']) }}
+{{ Form::open(['url' => route('admin.admin_users.store'), 'method' => 'post']) }}
     <div class="form-group info">
         <label for="InputUserId">User ID</label>
         {{ Form::text('user_id', old('user_id'), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
@@ -35,11 +35,11 @@
     </div>
     <div class="form-group">
         <label for="InputRole">Role</label>
-        {{ Form::select('role', \Domain\AdminUser\AdminUserRole::getDisplayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('role', \Domain\AdminUser\AdminUserRole::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \Domain\AdminUser\AdminUserStatus::getDisplayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Domain\AdminUser\AdminUserStatus::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}

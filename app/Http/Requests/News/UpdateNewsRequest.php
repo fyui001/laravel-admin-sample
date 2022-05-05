@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Requests\News;
 
 use App\Http\Requests\Request as AppRequest;
+use Domain\News\Content;
+use Domain\News\Status;
+use Domain\News\Title;
 
 class UpdateNewsRequest extends AppRequest
 {
@@ -55,5 +58,20 @@ class UpdateNewsRequest extends AppRequest
             'title' => 'タイトル',
             'content' => 'コンテンツ',
         ];
+    }
+
+    public function getTitle(): Title
+    {
+        return new Title($this->input('title'));
+    }
+
+    public function getContent(bool $asResource = false)
+    {
+        return new Content($this->input('content'));
+    }
+
+    public function getStatus(): Status
+    {
+        return Status::tryFrom((int)$this->input('status'));
     }
 }

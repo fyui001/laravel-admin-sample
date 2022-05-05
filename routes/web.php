@@ -11,34 +11,36 @@
 |
 */
 
-Route::redirect('/', '/auth/login');
+Route::redirect('/', '/admin/auth/login');
 
-/* Top Page */
-Route::get('/top', 'HomeController@index')->name('top_page');
+Route::group(['prefix' => 'admin'], function() {
+    /* Top Page */
+    Route::get('/top', 'HomeController@index')->name('admin.top_page');
 
-/* Auth */
-Route::prefix('auth')->group(function () {
-    Route::get('/login', 'Auth\LoginController@showLoginForm')->name('auth.login');
-    Route::post('/login', 'Auth\LoginController@login')->name('auth.login.post');
-    Route::get('/logout', 'Auth\LoginController@logout')->name('auth.logout');
-});
+    /* Auth */
+    Route::prefix('auth')->group(function () {
+        Route::get('/login', 'Auth\LoginController@showLoginForm')->name('admin.auth.login');
+        Route::post('/login', 'Auth\LoginController@login')->name('admin.auth.login.post');
+        Route::get('/logout', 'Auth\LoginController@logout')->name('admin.auth.logout');
+    });
 
-/* AdminUsers */
-Route::prefix('admin_users')->group(function() {
-    Route::get('/','AdminUserController@index')->name('admin_users.index');
-    Route::get('/create','AdminUserController@create')->name('admin_users.create');
-    Route::post('/','AdminUserController@store')->name('admin_users.store');
-    Route::get('/{adminUser}/edit','AdminUserController@edit')->where('user', '[0-9]+')->name('admin_users.edit');
-    Route::put('/{adminUser}','AdminUserController@update')->where('user', '[0-9]+')->name('admin_users.update');
-    Route::delete('/{adminUser}','AdminUserController@destroy')->where('user', '[0-9]+')->name('admin_users.destroy');
-});
+    /* AdminUsers */
+    Route::prefix('admin_users')->group(function() {
+        Route::get('/','AdminUserController@index')->name('admin.admin_users.index');
+        Route::get('/create','AdminUserController@create')->name('admin.admin_users.create');
+        Route::post('/','AdminUserController@store')->name('admin.admin_users.store');
+        Route::get('/{adminUser}/edit','AdminUserController@edit')->where('user', '[0-9]+')->name('admin.admin_users.edit');
+        Route::put('/{adminUser}','AdminUserController@update')->where('user', '[0-9]+')->name('admin.admin_users.update');
+        Route::delete('/{adminUser}','AdminUserController@destroy')->where('user', '[0-9]+')->name('admin.admin_users.destroy');
+    });
 
-/* News */
-Route::prefix('news')->group(function() {
-    Route::get('/', 'NewsController@index')->name('news.index');
-    Route::get('/create', 'NewsController@create')->name('news.create');
-    Route::post('/', 'NewsController@store')->name('news.store');
-    Route::put('/{news}', 'NewsController@update')->where('news', '[0-9]+')->name('news.update');
-    Route::get('/{news}/edit', 'NewsController@edit')->where('news', '[0-9]+')->name('news.edit');
-    Route::delete('/{news}', 'NewsController@destroy')->where('news', '[0-9]+')->name('news.destroy');
+    /* News */
+    Route::prefix('news')->group(function() {
+        Route::get('/', 'NewsController@index')->name('admin.news.index');
+        Route::get('/create', 'NewsController@create')->name('admin.news.create');
+        Route::post('/', 'NewsController@store')->name('admin.news.store');
+        Route::put('/{news}', 'NewsController@update')->where('news', '[0-9]+')->name('admin.news.update');
+        Route::get('/{news}/edit', 'NewsController@edit')->where('news', '[0-9]+')->name('admin.news.edit');
+        Route::delete('/{news}', 'NewsController@destroy')->where('news', '[0-9]+')->name('admin.news.destroy');
+    });
 });

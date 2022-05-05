@@ -1,3 +1,5 @@
+CONTAINER_ID = `docker-compose ps -q app`
+
 init:
 	@cp .env.example .env
 	@cp docker-compose.example.yml docker-compose.yml
@@ -40,6 +42,11 @@ up:
 
 down:
 	@docker-compose down
+
+cp_vendor:
+	rm -rf vendor
+	docker cp $(CONTAINER_ID):/code/vendor ./vendor
+	@echo '"one sync vendor!'
 
 setup:
 	@docker-compose exec app php artisan key:generate

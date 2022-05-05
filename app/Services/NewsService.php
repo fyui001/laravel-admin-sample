@@ -11,9 +11,6 @@ use App\Http\Requests\News\UpdateNewsRequest;
 use Domain\News\News;
 use Domain\News\NewsDomainService;
 use Domain\News\NewsId;
-use Domain\News\Title;
-use Domain\News\Content;
-use Domain\News\Status;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsService extends BaseService implements NewsServiceInterface
@@ -49,9 +46,9 @@ class NewsService extends BaseService implements NewsServiceInterface
     public function createNews(CreateNewsRequest $request): News
     {
         return $this->newsDomainService->create(
-            new Title($request->input('title')),
-            new Content($request->input('content')),
-            new Status($request->input('status'))
+            $request->getTitle(),
+            $request->getContent(),
+            $request->getStatus()
         );
     }
 
@@ -61,13 +58,13 @@ class NewsService extends BaseService implements NewsServiceInterface
      * @param NewsId $id
      * @param UpdateNewsRequest $request
      */
-    public function updateNews(NewsId $id, UpdateNewsRequest $request): void
+    public function updateNews(NewsId $id, UpdateNewsRequest $request): News
     {
-        $this->newsDomainService->update(
+        return $this->newsDomainService->update(
             $id,
-            new Title($request->input('title')),
-            new Content($request->input('content')),
-            new Status((int)$request->input('status'))
+            $request->getTitle(),
+            $request->getContent(),
+            $request->getStatus()
         );
     }
 
@@ -75,9 +72,10 @@ class NewsService extends BaseService implements NewsServiceInterface
      * Delete the news.
      *
      * @param NewsId $id
+     * @return bool
      */
-    public function deleteNews(NewsId $id): void
+    public function deleteNews(NewsId $id): bool
     {
-        $this->newsDomainService->delete($id);
+        return $this->newsDomainService->delete($id);
     }
 }

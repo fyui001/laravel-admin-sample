@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Requests\AdminUsers;
 
 use App\Http\Requests\Request as AppRequest;
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 
 class UpdateAdminUserRequest extends AppRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -17,9 +21,9 @@ class UpdateAdminUserRequest extends AppRequest
     public function authorize(): bool
     {
         return \Auth::guard('web')->user()->can(
-                'update',
-                \Auth::guard('web')->user()
-            );
+            'update',
+            \Auth::guard('web')->user()
+        );
     }
 
     /**
@@ -69,5 +73,30 @@ class UpdateAdminUserRequest extends AppRequest
             'role' => 'ロール',
             'status' => 'ステータス'
         ];
+    }
+
+    public function getAdminUserId(): AdminUserId
+    {
+        return new AdminUserId($this->input('user_id'));
+    }
+
+    public function getPassword(): AdminUserHashedPassword
+    {
+        return new AdminUserHashedPassword($this->input('password'));
+    }
+
+    public function getName(): AdminUserName
+    {
+        return new AdminUserName($this->input('name'));
+    }
+
+    public function getRole(): AdminUserRole
+    {
+        return AdminUserRole::tryFrom((int)$this->input('role'));
+    }
+
+    public function getStatus(): AdminUserStatus
+    {
+        return AdminUserStatus::tryFrom((int)$this->input('status'));
     }
 }

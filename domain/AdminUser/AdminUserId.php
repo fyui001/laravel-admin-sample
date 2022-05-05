@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Domain\Base\BaseUserId;
+use Domain\Base\BaseValue;
 
-class AdminUserId extends BaseUserId
+class AdminUserId extends BaseValue
 {
 }

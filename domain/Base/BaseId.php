@@ -1,31 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\Base;
 
-use Domain\Exception\InvalidArgumentException;
+use Courage\CoInt\CoPositiveInteger;
 
-abstract class BaseId extends BasePositiveIntegerValue
+abstract class BaseId extends CoPositiveInteger
 {
-    protected $value;
-
     public function __construct(int $value)
     {
         parent::__construct($value);
-        if ($value < 1) {
-            throw new InvalidArgumentException();
-        }
-
-        $this->value = $value;
-    }
-
-    public function rawValue(): int
-    {
-        return $this->value;
-    }
-
-    public function __toString(): string
-    {
-        return (string)$this->value;
     }
 }

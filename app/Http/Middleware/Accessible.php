@@ -10,11 +10,11 @@ use Illuminate\Support\Str;
 
 class Accessible
 {
-
-    public function handle($request, Closure $next, $guards = null) {
+    public function handle($request, Closure $next, $guards = null)
+    {
         $currentUser = \Auth::user();
 
-        // Current route is not one of avaiable routes
+        // Current route is not one of available routes
         if ($currentUser) {
             $accessibleRoutes = $this->getAccessibleRoutes($currentUser->role);
             abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
@@ -29,42 +29,42 @@ class Accessible
      * @param int $roleId
      * @return array
      */
-    protected function getAccessibleRoutes(int $roleId): array {
+    protected function getAccessibleRoutes(int $roleId): array
+    {
 
         $routes = [
-            AdminUserRole::ROLE_SYSTEM => [
-                'auth.*',
-                'admin_users.*',
-                'news.*',
+            AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.admin_users.*',
+                'admin.news.*',
+                'admin.top_page',
+            ],
+            AdminUserRole::ROLE_ADMIN->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.news.*',
                 'top_page',
             ],
-            AdminUserRole::ROLE_ADMIN => [
-                'auth.*',
-                'news.*',
-                'top_page',
-            ],
-            AdminUserRole::ROLE_USER => [
-                'auth.*',
-                'news.index',
-                'top_page',
+            AdminUserRole::ROLE_USER->getValue()->getRawValue() => [
+                'admin.auth.*',
+                'admin.news.index',
+                'admin.top_page',
             ]
         ];
 
         return data_get($routes, $roleId, []);
-
     }
 
     /**
      *
      *
-     * @param array $avaiableRoutes
+     * @param array $availableRoutes
      * @return bool
      */
-    protected function containsCurrentRoute(array $avaiableRoutes): bool {
-
+    protected function containsCurrentRoute(array $availableRoutes): bool
+    {
         $currentRoute = \Route::currentRouteName();
 
-        foreach ($avaiableRoutes as $route) {
+        foreach ($availableRoutes as $route) {
             if (Str::is($route, $currentRoute)) {
                 return true;
             }
@@ -72,5 +72,4 @@ class Accessible
 
         return false;
     }
-
 }

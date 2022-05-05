@@ -7,7 +7,7 @@
         ニュース一覧 ( 全{{ $news->count() }}件 )
     </h3>
     <div class="text-right">
-        <a href="{{ route('news.create') }}" class="btn btn-round btn-info" rel="tooltip">
+        <a href="{{ route('admin.news.create') }}" class="btn btn-round btn-info" rel="tooltip">
             <span class="oi oi-plus"></span>
             新規作成
         </a>
@@ -33,10 +33,10 @@
             <td>{{ $item->toDomain()->getContent() }}</td>
             <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
-                <a href="{{ route('news.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('news.destroy', $item) }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.news.destroy', $item) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
                    data-label="{{ $item->toDomain()->getTitle() }}" title="Delete">
                     <span class="oi oi-x"></span>

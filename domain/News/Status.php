@@ -4,38 +4,34 @@ declare(strict_types=1);
 
 namespace Domain\News;
 
+use Courage\CoInt\CoInteger;
+use Courage\CoList;
+use Courage\CoString;
 use Domain\Base\BaseEnum;
 
-class Status extends BaseEnum
+enum Status: int implements BaseEnum
 {
-    const STATUS_INVALID = 0;
-    const STATUS_VALID = 1;
+    case STATUS_INVALID = 0;
+    case STATUS_VALID = 1;
 
-    public function displayName(): string
+    public function displayName(): Costring
     {
-        switch ($this->rawValue()) {
-            case self::STATUS_INVALID:
-                return '無効';
-            case self::STATUS_VALID:
-                return '有効';
-        }
+        return match($this) {
+            self::STATUS_INVALID => new CoString('無効'),
+            self::STATUS_VALID => new CoString('有効'),
+        };
     }
 
-    public static function getDisplayNameList(): array
+    public static function displayNameList(): CoList
     {
-        return [
-            self::STATUS_INVALID => '無効',
-            self::STATUS_VALID => '有効',
-        ];
+        return new CoList([
+            self::STATUS_INVALID->getValue()->getRawValue() => new CoString('無効'),
+            self::STATUS_VALID->getValue()->getRawValue() => new CoString('有効'),
+        ]);
     }
 
-    public function isInvalid(): bool
+    public function getValue(): CoInteger
     {
-        return $this->is(self::STATUS_INVALID);
-    }
-
-    public function isValid(): bool
-    {
-        return $this->is(self::STATUS_VALID);
+        return new CoInteger($this->value);
     }
 }
