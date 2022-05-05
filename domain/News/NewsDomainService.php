@@ -30,13 +30,13 @@ class NewsDomainService
         return $this->repository->create($title, $content, $status);
     }
 
-    public function update(NewsId $id, Title $title, Content $content, Status $status)
+    public function update(NewsId $id, Title $title, Content $content, Status $status): News
     {
-        $this->repository->update($id, $title, $content, $status);
+        return $this->repository->update($id, $title, $content, $status);
     }
 
-    public function delete(NewsId $id)
+    public function delete(NewsId $id): bool
     {
-        $this->repository->delete($id);
+        return $this->repository->delete($id);
     }
 }

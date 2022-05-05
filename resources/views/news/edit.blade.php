@@ -17,6 +17,7 @@
 
 @section('content')
 {{ Form::open(['url' => route('admin.news.update', $news->id()), 'method' => 'put', 'class' => 'form-horizontal']) }}
+    <?php /** @vae News $news */ ?>
     <div class="form-group">
         <label for="InputTitle">Title</label>
         {{ Form::text('title', old('title', $news->getTitle()), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
@@ -27,8 +28,7 @@
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-
-        {{ Form::select('status', \Domain\News\Status::getDisplayNameList(), old('status', $news->getStatus()->rawValue()), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        {{ Form::select('status', \Domain\News\Status::displayNameList(), old('status', $news->getStatus()->getValue()->getRawValue()), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
 {{ Form::close() }}

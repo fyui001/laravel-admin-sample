@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\NewsServiceInterface;
 use App\Http\Requests\News\CreateNewsRequest;
 use App\Http\Requests\News\UpdateNewsRequest;
-use Domain\News\News;
 use Domain\News\NewsId;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;

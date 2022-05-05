@@ -35,30 +35,34 @@ class NewsRepository implements NewsRepositoryInterface
     public function create(Title $title, Content $content, Status $status): NewsDomain
     {
         $model = new NewsModel();
-        $model->title = $title->rawValue();
-        $model->content = $content->rawValue();
-        $model->status = $status->rawValue();
+        $model->title = $title->getRawValue();
+        $model->content = $content->getRawValue();
+        $model->status = $status->getValue()->getRawValue();
 
         $model->save();
 
         return $model->toDomain();
     }
 
-    public function update(NewsId $id, Title $title, Content $content, Status $status)
+    public function update(NewsId $id, Title $title, Content $content, Status $status): NewsDomain
     {
         $model = NewsModel::where(['id' => $id])->first();
-        $model->title = $title->rawValue();
-        $model->content = $content->rawValue();
-        $model->status = $status->rawValue();
+        $model->title = $title->getRawValue();
+        $model->content = $content->getRawValue();
+        $model->status = $status->getValue()->getRawValue();
         $model->save();
+
+        return $model->toDomain();
     }
 
-    public function delete(NewsId $id)
+    public function delete(NewsId $id): bool
     {
         $model = NewsModel::where(['id' => $id])->first();
+
         if (!$model) {
             throw new NotFoundException();
         }
-        $model->delete();
+
+        return $model->delete();
     }
 }
