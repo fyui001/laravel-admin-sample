@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   app:
     build:
@@ -42,5 +42,6 @@ services:
       - 3306:3306
 
 volumes:
+  php-vendor:
   db-store:
   node-modules:
