@@ -84,10 +84,10 @@ class LoginController extends Controller
         }
 
         if (!Auth::attempt($credentials)) {
-            return redirect()->intended(route('auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
+            return redirect()->intended(route('admin.auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
 
-        return redirect()->intended(route('top_page'))->with(['success' => 'Welcome!']);
+        return redirect()->intended(route('admin.top_page'))->with(['success' => 'Welcome!']);
     }
 
     /**
@@ -98,7 +98,7 @@ class LoginController extends Controller
     public function logout(): RedirectResponse
     {
         Auth::logout();
-        return redirect(route('auth.login'));
+        return redirect(route('admin.auth.login'));
     }
 
 }

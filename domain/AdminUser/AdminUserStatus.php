@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
+use Courage\CoInt\CoInteger;
+use Courage\CoList;
+use Courage\CoString;
 use Domain\Base\BaseEnum;
 
-class AdminUserStatus extends BaseEnum
+enum AdminUserStatus: int implements BaseEnum
 {
-    const STATUS_INVALID = 0;
-    const STATUS_VALID = 1;
+    case STATUS_INVALID = 0;
+    case STATUS_VALID = 1;
 
-    public function displayName(): string
+    public function displayName(): Costring
     {
-        switch ($this->rawValue()) {
-            case self::STATUS_INVALID:
-                return '無効';
-            case self::STATUS_VALID:
-                return '有効';
-        }
+        return match($this) {
+            self::STATUS_INVALID => new CoString('無効'),
+            self::STATUS_VALID => new CoString('有効'),
+        };
     }
 
-    public static function getDisplayNameList(): array
+    public static function displayNameList(): CoList
     {
-        return [
-            self::STATUS_INVALID => '無効',
-            self::STATUS_VALID => '有効',
-        ];
+        return new CoList([
+            self::STATUS_INVALID->getValue()->getRawValue() => new CoString('無効'),
+            self::STATUS_VALID->getValue()->getRawValue() => new CoString('有効'),
+        ]);
+    }
+
+    public function getValue(): CoInteger
+    {
+        return new CoInteger($this->value);
     }
 }

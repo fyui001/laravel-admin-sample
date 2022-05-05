@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\AdminUsers;
 
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
 use Infra\EloquentModels\AdminUser;
 use App\Http\Requests\Request as AppRequest;
 
@@ -66,5 +71,30 @@ class CreateAdminUserRequest extends AppRequest
             'role' => 'ロール',
             'status' => 'ステータス'
         ];
+    }
+
+    public function getAdminUserId(): AdminUserId
+    {
+        return new AdminUserId($this->input('user_id'));
+    }
+
+    public function getPassword(): AdminUserHashedPassword
+    {
+        return new AdminUserHashedPassword($this->input('password'));
+    }
+
+    public function getName(): AdminUserName
+    {
+        return new AdminUserName($this->input('name'));
+    }
+
+    public function getRole(): AdminUserRole
+    {
+        return AdminUserRole::tryFrom((int)$this->input('role'));
+    }
+
+    public function getStatus(): AdminUserStatus
+    {
+        return AdminUserStatus::tryFrom((int)$this->input('status'));
     }
 }

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
+use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
 use Domain\AdminUser\AdminUser as AdminUserDomain;
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
-use Domain\Common\HashedPassword;
-use Domain\Common\PeopleName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
 use Domain\Exception\NotFoundException;
@@ -22,7 +21,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
 {
     public function get(AdminId $id): AdminUserDomain
     {
-        $model = AdminUserModel::where(['id' => $id->rawValue()])
+        $model = AdminUserModel::where(['id' => $id->getRawValue()])
             ->first();
         if (!$model) {
             throw new NotFoundException();
@@ -36,14 +35,20 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return AdminUserModel::paginate(15);
     }
 
-    public function create(AdminUserArgumentForCreate $adminUserArgumentForCreate): AdminUserDomain
-    {
+    public function create(
+        AdminUserId $adminUserId,
+        AdminUserHashedPassword $password,
+        AdminUserName $name,
+        AdminUserRole $role,
+        AdminUserStatus $status
+    ): AdminUserDomain {
         $model = new AdminUserModel();
-        $model->user_id = $adminUserArgumentForCreate->adminUserId->rawValue();
-        $model->password = $adminUserArgumentForCreate->hashedPassword->rawValue();
-        $model->name = $adminUserArgumentForCreate->name->rawValue();
-        $model->role = $adminUserArgumentForCreate->role->rawValue();
-        $model->status = $adminUserArgumentForCreate->status->rawValue();
+
+        $model->user_id = $adminUserId->getRawValue();
+        $model->password = $password->getRawValue();
+        $model->name = $name->getRawValue();
+        $model->role = $role->getValue()->getRawValue();
+        $model->status = $status->getValue()->getRawValue();
 
         $model->save();
 
@@ -51,28 +56,32 @@ class AdminUserRepository implements AdminUserRepositoryInterface
     }
 
     public function update(
-        AdminId        $id,
-        AdminUserId    $userId,
-        HashedPassword $password,
-        PeopleName     $name,
-        AdminUserRole  $role,
+        AdminId $id,
+        AdminUserId $adminUserId,
+        AdminUserHashedPassword $password,
+        AdminUserName $name,
+        AdminUserRole $role,
         AdminUserStatus $status
-    ){
+    ): AdminUserDomain {
         $model = AdminUserModel::where('id', $id)->first();
-        $model->user_id = $userId->rawValue();
-        $model->password = $password->rawValue();
-        $model->name = $name->rawValue();
-        $model->role = $role->rawValue();
-        $model->status = $status->rawValue();
+
+        $model->user_id = $adminUserId->getRawValue();
+        $model->password = $password->getRawValue();
+        $model->name = $name->getRawValue();
+        $model->role = $role->getValue()->getRawValue();
+        $model->status = $status->getValue()->getRawValue();
         $model->save();
+
+        return $model->toDomain();
     }
 
-    public function delete(AdminId $id)
+    public function delete(AdminId $id): bool
     {
         $model = AdminUser::where('id', $id)->first();
         if (!$model) {
             throw new NotFoundException();
         }
-        $model->delete();
+
+        return $model->delete();
     }
 }

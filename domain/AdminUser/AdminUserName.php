@@ -6,6 +6,6 @@ namespace Domain\AdminUser;
 
 use Domain\Base\BaseValue;
 
-class AdminUserId extends BaseValue
+class AdminUserName extends BaseValue
 {
 }

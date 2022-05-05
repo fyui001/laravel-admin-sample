@@ -6,11 +6,8 @@ namespace App\Services;
 
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
-use Domain\Common\HashedPassword;
-use Domain\Common\PeopleName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
-use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
 use App\Services\Service as BaseService;
 use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
 use App\Services\Interfaces\AdminUserServiceInterface;
@@ -45,15 +42,13 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
      */
     public function createUser(CreateAdminUserRequest $request): void
     {
-        $adminUserRepositoryArgument = new AdminUserArgumentForCreate(
-            new AdminUserId($request->input('user_id')),
-            new HashedPassword(Hash::make($request->input('password'))),
-            new PeopleName($request->input('name')),
-            new AdminUserRole((int)$request->input('role')),
-            new AdminUserStatus((int)$request->input('status'))
+        $this->adminUserDomainService->create(
+            $request->getAdminUserId(),
+            $request->getPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus()
         );
-
-        $this->adminUserDomainService->create($adminUserRepositoryArgument);
     }
 
     /**
@@ -66,11 +61,11 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
     {
         $this->adminUserDomainService->update(
             $id,
-            new AdminUserId($request->input('user_id')),
-            new HashedPassword(Hash::make($request->input('password'))),
-            new PeopleName($request->input('name')),
-            new AdminUserRole((int)$request->input('role')),
-            new AdminUserStatus((int)$request->input('status'))
+            $request->getAdminUserId(),
+            $request->getPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus()
         );
     }
 

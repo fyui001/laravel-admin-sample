@@ -54,7 +54,7 @@ class AdminUserController extends AppController
     public function store(CreateAdminUserRequest $request): RedirectResponse
     {
         $this->adminUserService->createUser($request);
-        return redirect(route('admin_users.index'))
+        return redirect(route('admin.admin_users.index'))
                 ->with('success', 'ユーザーを保存しました');
     }
 

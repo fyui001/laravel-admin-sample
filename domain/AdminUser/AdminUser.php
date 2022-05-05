@@ -4,51 +4,41 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Domain\Common\HashedPassword;
-use Domain\Common\PeopleName;
-use Domain\AdminUser\AdminUserRole;
-use Domain\AdminUser\AdminUserStatus;
-
 class AdminUser
 {
     private AdminId $id;
-    private AdminUserId $userId;
-    private HashedPassword $hashedPassword;
-    private PeopleName $name;
+    private AdminUserId $adminUserId;
+    private AdminUserName $adminUserName;
     private AdminUserRole $role;
     private AdminUserStatus $status;
 
     public function __construct(
-        AdminId         $id,
-        AdminUserId     $userId,
-        ?HashedPassword $hashedPassword,
-        PeopleName      $name,
-        AdminUserRole   $role,
+        AdminId $id,
+        AdminUserId $adminUserId,
+        AdminUserName $adminUserName,
+        AdminUserRole $role,
         AdminUserStatus $status
     ) {
         $this->id = $id;
-        $this->userId = $userId;
-        $this->hashedPassword = $hashedPassword;
-        $this->name = $name;
+        $this->adminUserId = $adminUserId;
+        $this->adminUserName = $adminUserName;
         $this->role = $role;
         $this->status = $status;
     }
 
     public static function makeDummy(
-        ?AdminId        $id = null,
-        ?AdminUserId    $userId,
-        ?PeopleName     $name = null,
-        ?HashedPassword $hashedPassword = null,
-        ?AdminUserRole  $role = null,
-        ?AdminUserStatus $status = null
+        ?AdminId $id,
+        ?AdminUserId $adminUserId,
+        ?AdminUserName $adminUserName,
+        ?AdminUserRole $role,
+        ?AdminUserStatus $status
     ): self {
         return new self(
             $id ?? new AdminId(1),
-            $userId ?? new AdminUserId('takada_yuki'),
-            $hashedPassword ?? new HashedPassword('dummy'),
-            $name ?? new PeopleName('高田憂希'),
-            $role ?? new AdminUserRole(AdminUserRole::ROLE_SYSTEM),
-        $status ?? new AdminUserStatus(AdminUserStatus::STATUS_VALID)
+            $adminUserId ?? new AdminUserId('takada_yuki'),
+            $adminUserName ?? new AdminUserName('高田憂希'),
+            $role ?? AdminUserRole::tryFrom(AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue()),
+        $status ?? AdminUserStatus::tryFrom(AdminUserStatus::STATUS_VALID->getValue()->getRawValue())
         );
     }
 
@@ -59,12 +49,12 @@ class AdminUser
 
     public function getUserId(): AdminUserId
     {
-        return $this->userId;
+        return $this->adminUserId;
     }
 
-    public function getName(): PeopleName
+    public function getName(): AdminUserName
     {
-        return $this->name;
+        return $this->adminUserName;
     }
 
     public function getRole(): AdminUserRole
@@ -80,21 +70,11 @@ class AdminUser
     public function toArray(): array
     {
         return [
-            'id' => $this->id->rawValue(),
-            'userId' - $this->userId->rawValue(),
-            'name' => $this->name->rawValue(),
-            'role' => $this->role->rawValue(),
-            'status' => $this->status->rawValue(),
+            'id' => $this->id->getRawValue(),
+            'userId' - $this->adminUserId->getRawValue(),
+            'name' => $this->adminUserName->getRawValue(),
+            'role' => $this->role->getValue()->getRawValue(),
+            'status' => $this->status->getValue()->getRawValue(),
         ];
-    }
-
-    public function getHashedPassword(): ?HashedPassword
-    {
-        return $this->hashedPassword;
-    }
-
-    public function hasHashedPassword(): bool
-    {
-        return !is_null($this->hashedPassword);
     }
 }

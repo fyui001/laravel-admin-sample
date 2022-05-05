@@ -1,59 +1,48 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
+use Courage\CoInt\CoInteger;
+use Courage\CoList;
+use Courage\CoString;
 use Domain\Base\BaseEnum;
 
-class AdminUserRole extends BaseEnum
+enum AdminUserRole: int implements BaseEnum
 {
-    const ROLE_SYSTEM = 1;
-    const ROLE_ADMIN = 2;
-    const ROLE_USER = 3;
+    case ROLE_SYSTEM = 1;
+    case ROLE_ADMIN = 2;
+    case ROLE_USER = 3;
 
-    public function displayName(): string
+    public function displayName(): Costring
     {
-        switch ($this->rawValue()) {
-            case self::ROLE_SYSTEM:
-                return 'システム管理者';
-            case self::ROLE_ADMIN:
-                return '管理者';
-            case self::ROLE_USER:
-                return '一般ユーザー';
-        }
+        return match($this) {
+            self::ROLE_SYSTEM => new CoString('システム管理者'),
+            self::ROLE_ADMIN => new CoString('管理者'),
+            self::ROLE_USER => new Costring('一般ユーザー'),
+        };
     }
 
-    public static function getDisplayNameList(): array
+    public static function displayNameList(): CoList
     {
-        return [
-            self::ROLE_SYSTEM => 'システム管理者',
-            self::ROLE_ADMIN => '管理者',
-            self::ROLE_USER => '一般ユーザー',
-        ];
+        return new CoList([
+            self::ROLE_SYSTEM->getValue()->getRawValue() => new CoString('システム管理者'),
+            self::ROLE_ADMIN->getValue()->getRawValue() => new CoString('管理者'),
+            self::ROLE_USER->getValue()->getRawValue() => new Costring('一般ユーザー'),
+        ]);
     }
 
     public function isSystem(): bool
     {
-        return $this->is(self::ROLE_SYSTEM);
+        return match($this) {
+            self::ROLE_SYSTEM => true,
+            default => false,
+        };
     }
 
-    public function isAdmin(): bool
+    public function getValue(): CoInteger
     {
-        return $this->is(self::ROLE_ADMIN);
-    }
-
-    public function isUser():bool
-    {
-        return $this->is(self::ROLE_USER);
-    }
-
-    public static function getAdminType(): self
-    {
-        return new self(self::ROLE_ADMIN);
-    }
-
-    public static function getSystemType(): self
-    {
-        return new self(self::ROLE_SYSTEM);
+        return new CoInteger($this->value);
     }
 }

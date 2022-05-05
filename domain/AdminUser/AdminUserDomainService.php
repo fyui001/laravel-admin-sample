@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Domain\AdminUser\AdminUserRepositoryArgument\AdminUserArgumentForCreate;
-use Domain\Common\HashedPassword;
-use Domain\Common\PeopleName;
-use Domain\AdminUser\AdminUserRole;
-use Domain\AdminUser\AdminUserStatus;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminUserDomainService
@@ -26,20 +21,31 @@ class AdminUserDomainService
         return $this->repository->getPaginate();
     }
 
-    public function create(AdminUserArgumentForCreate $adminUserArgumentForCreate)
-    {
-        $this->repository->create($adminUserArgumentForCreate);
+    public function create(
+        AdminUserId $adminUserId,
+        AdminUserHashedPassword $password,
+        AdminUserName $name,
+        AdminUserRole $role,
+        AdminUSerStatus $status
+    ): AdminUser {
+        return $this->repository->create(
+            $adminUserId,
+            $password,
+            $name,
+            $role,
+            $status
+        );
     }
 
     public function update(
-        AdminId        $id,
-        AdminUserId    $userId,
-        HashedPassword $password,
-        PeopleName     $name,
-        AdminUserRole  $role,
+        AdminId $id,
+        AdminUserId $userId,
+        AdminUserHashedPassword $password,
+        AdminUserName $name,
+        AdminUserRole $role,
         AdminUserStatus $status
-    ){
-        $this->repository->update(
+    ): AdminUser {
+        return $this->repository->update(
             $id,
             $userId,
             $password,
@@ -49,8 +55,8 @@ class AdminUserDomainService
         );
     }
 
-    public function delete(AdminId $id)
+    public function delete(AdminId $id): bool
     {
-        $this->repository->delete($id);
+        return $this->repository->delete($id);
     }
 }
