@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
+use Domain\Common\OrderKey;
+use Domain\News\NewCount;
+use Domain\News\News;
+use Domain\News\NewsList;
 use Domain\News\NewsRepository as NewsRepositoryInterface;
 use Domain\News\News as NewsDomain;
 use Domain\News\NewsId;
@@ -12,7 +16,6 @@ use Domain\News\Content;
 use Domain\News\Status;
 use Domain\Exception\NotFoundException;
 use Infra\EloquentModels\News as NewsModel;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -27,9 +30,27 @@ class NewsRepository implements NewsRepositoryInterface
         return $model->toDomain();
     }
 
-    public function getPaginate(): LengthAwarePaginator
+    public function getPaginate($paginate): NewsList
     {
-        return NewsModel::paginate(15);
+        $builder = NewsModel::query()
+            ->orderBy('id', OrderKey::DESC->getValue()->getRawValue())
+            ->limit($paginate->getLimit()->getRawValue())
+            ->offset($paginate->offset()->getRawValue());
+
+        $collection = $builder->get();
+
+        return new NewsList(
+            $collection->map(function (NewsModel $model) {
+                return $model->toDomain();
+            })->toArray()
+        );
+    }
+
+    public function getCount(): NewCount
+    {
+        $query = NewsModel::query();
+
+        return new NewCount($query->count());
     }
 
     public function create(Title $title, Content $content, Status $status): NewsDomain

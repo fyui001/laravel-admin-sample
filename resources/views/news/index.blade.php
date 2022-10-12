@@ -27,18 +27,19 @@
     </tr>
     </thead>
     @foreach($news as $item)
+        <?php /** @var Domain\News\News $item */ ?>
         <tr>
-            <td>{{ $item->toDomain()->id() }}</td>
-            <td>{{ $item->toDomain()->getTitle() }}</td>
-            <td>{{ $item->toDomain()->getContent() }}</td>
-            <td>{{ $item->toDomain()->getStatus()->displayName() }}</td>
+            <td>{{ $item->id() }}</td>
+            <td>{{ $item->getTitle() }}</td>
+            <td>{{ $item->getContent() }}</td>
+            <td>{{ $item->getStatus()->displayName() }}</td>
             <td class="td-actions text-right">
-                <a href="{{ route('admin.news.edit', $item) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
+                <a href="{{ route('admin.news.edit', $item->id()) }}" class="btn btn-success btn-round" rel="tooltip" data-placement="bottom" title="Edit">
                     <span class="oi oi-pencil"></span>
                 </a>
-                <a href="javascript:void(0)" data-url="{{ route('admin.news.destroy', $item) }}"
+                <a href="javascript:void(0)" data-url="{{ route('admin.news.destroy', $item->id()) }}"
                    class="btn btn-danger btn-round delete-form-btn" rel="tooltip"
-                   data-label="{{ $item->toDomain()->getTitle() }}" title="Delete">
+                   data-label="{{ $item->getTitle() }}" title="Delete">
                     <span class="oi oi-x"></span>
                 </a>
             </td>
@@ -46,7 +47,7 @@
     @endforeach
 </table>
 <div class="box-footer clearfix">
-    {!! $news->render() !!}
+    {!! $news->withPath('/admin/news')->links('pagination::bootstrap-4') !!}
 </div>
 <form action="#" id="form-delete" method="POST">
     <input type="hidden" name="_method" value="delete" />

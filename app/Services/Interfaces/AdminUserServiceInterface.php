@@ -5,14 +5,30 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use Domain\AdminUser\AdminId;
-use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
-use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserList;
+use Domain\AdminUser\AdminUserName;
+use Domain\AdminUser\AdminUserRole;
+use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\RawPassword;
 
 interface AdminUserServiceInterface
 {
-    public function getAdminUserPaginator(): LengthAwarePaginator;
-    public function createUser(CreateAdminUserRequest $request);
-    public function updateUser(AdminId $id, UpdateAdminUserRequest $request);
+    public function getAdminUserPaginator(): AdminUserList;
+    public function createUser(
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    );
+    public function updateUser(
+        AdminId $id,
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    );
     public function deleteUser(AdminId $id);
 }

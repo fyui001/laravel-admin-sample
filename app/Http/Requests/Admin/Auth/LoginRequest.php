@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\Request as AppRequest;
+use Domain\AdminUser\AdminUserId;
+use Domain\Common\RawPassword;
 
 class LoginRequest extends AppRequest
 {
@@ -29,5 +31,15 @@ class LoginRequest extends AppRequest
             'user_id' => 'required|max:255',
             'password' => 'required|max:255',
         ];
+    }
+
+    public function getUserId(): AdminUserId
+    {
+        return new AdminUserId($this->input('user_id'));
+    }
+
+    public function getRawPassword(): RawPassword
+    {
+        return new RawPassword($this->input('password'));
     }
 }

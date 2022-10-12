@@ -6,15 +6,14 @@ namespace App\Services;
 
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
+use Domain\AdminUser\AdminUserList;
+use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
 use App\Services\Service as BaseService;
-use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
 use App\Services\Interfaces\AdminUserServiceInterface;
-use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
 use Domain\AdminUser\AdminUserDomainService;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\Common\RawPassword;
 
 class AdminUserService extends BaseService implements AdminUserServiceInterface
 {
@@ -28,26 +27,35 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
     /**
      * Get all user paginator.
      *
-     * @return LengthAwarePaginator
+     * @return AdminUserList
      */
-    public function getAdminUserPaginator(): LengthAwarePaginator
+    public function getAdminUserPaginator(): AdminUserList
     {
-        return $this->adminUserDomainService->getAdminUserPaginator();
+        return $this->adminUserDomainService->getAdminUserList();
     }
 
     /**
      * Create a user.
      *
-     * @param CreateAdminUserRequest $request
+     * @param AdminUserId $adminUserId
+     * @param RawPassword $adminUserRawPassWord
+     * @param AdminUserName $adminUserName
+     * @param AdminUserRole $adminUserRole
+     * @param AdminUserStatus $adminUserStatus
      */
-    public function createUser(CreateAdminUserRequest $request): void
-    {
-        $this->adminUserDomainService->create(
-            $request->getAdminUserId(),
-            $request->getPassword(),
-            $request->getName(),
-            $request->getRole(),
-            $request->getStatus()
+    public function createUser(
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    ): void {
+        $this->adminUserDomainService->createAdminUser(
+            $adminUserId,
+            $adminUserRawPassWord,
+            $adminUserName,
+            $adminUserRole,
+            $adminUserStatus,
         );
     }
 
@@ -55,17 +63,27 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
      * Update the user.
      *
      * @param AdminId $id
-     * @param UpdateAdminUserRequest $request
+     * @param AdminUserId $adminUserId
+     * @param RawPassword $adminUserRawPassWord
+     * @param AdminUserName $adminUserName
+     * @param AdminUserRole $adminUserRole
+     * @param AdminUserStatus $adminUserStatus
      */
-    public function updateUser(AdminId $id, UpdateAdminUserRequest $request): void
-    {
-        $this->adminUserDomainService->update(
+    public function updateUser(
+        AdminId $id,
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
+    ): void {
+        $this->adminUserDomainService->updateAdminUser(
             $id,
-            $request->getAdminUserId(),
-            $request->getPassword(),
-            $request->getName(),
-            $request->getRole(),
-            $request->getStatus()
+            $adminUserId,
+            $adminUserRawPassWord,
+            $adminUserName,
+            $adminUserRole,
+            $adminUserStatus,
         );
     }
 
@@ -74,8 +92,8 @@ class AdminUserService extends BaseService implements AdminUserServiceInterface
      *
      * @param AdminId $id
      */
-    public function deleteUser(AdminId $id)
+    public function deleteUser(AdminId $id): void
     {
-        $this->adminUserDomainService->delete($id);
+        $this->adminUserDomainService->deleteAdminUser($id);
     }
 }

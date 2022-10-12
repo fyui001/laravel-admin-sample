@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Domain\AdminUser\AdminUserRole;
+use App\Auth\AdminUser;
 use Closure;
+use Domain\AdminUser\AdminUserRole;
 use Illuminate\Support\Str;
 
 class Accessible
 {
     public function handle($request, Closure $next, $guards = null)
     {
+        /** @var AdminUser $currentUser */
         $currentUser = \Auth::user();
 
         // Current route is not one of available routes
         if ($currentUser) {
-            $accessibleRoutes = $this->getAccessibleRoutes($currentUser->role);
+            $accessibleRoutes = $this->getAccessibleRoutes(
+                $currentUser->getAdminUser()->getRole()->getValue()->getRawValue()
+            );
+
             abort_unless($this->containsCurrentRoute($accessibleRoutes), 403);
         }
 
@@ -36,19 +41,14 @@ class Accessible
             AdminUserRole::ROLE_SYSTEM->getValue()->getRawValue() => [
                 'admin.auth.*',
                 'admin.admin_users.*',
-                'admin.news.*',
                 'admin.top_page',
+                'admin.news.*'
             ],
-            AdminUserRole::ROLE_ADMIN->getValue()->getRawValue() => [
+            AdminUserRole::ROLE_OPERATOR->getValue()->getRawValue() => [
                 'admin.auth.*',
-                'admin.news.*',
-                'top_page',
-            ],
-            AdminUserRole::ROLE_USER->getValue()->getRawValue() => [
-                'admin.auth.*',
-                'admin.news.index',
                 'admin.top_page',
-            ]
+                'admin.news.*',
+            ],
         ];
 
         return data_get($routes, $roleId, []);

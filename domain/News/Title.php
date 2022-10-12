@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\News;
 
-use Domain\Base\BaseValue;
+use Domain\Common\RawString;
 
-class Title extends BaseValue
+class Title extends RawString
 {
 }

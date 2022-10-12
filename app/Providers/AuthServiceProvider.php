@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use Domain\AdminUser\AdminUserRepository;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,8 +14,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        \Infra\EloquentModels\AdminUser::class => \App\Policies\AdminUserPolicy::class,
-        \Infra\EloquentModels\News::class => \App\Policies\NewsPolicy::class,
+        \Infra\EloquentRepository\AdminUserRepository::class => \App\Policies\AdminUserPolicy::class,
+        \Infra\EloquentRepository\NewsRepository::class => \App\Policies\NewsPolicy::class,
     ];
 
     /**
@@ -22,9 +23,15 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(AuthManager $authManager)
     {
         $this->registerPolicies();
-        //
+
+        $authManager->provider('adminAuth', function ($app) {
+            return new AdminUserProvider(
+                $app->make(AdminUserRepository::class),
+                $app['hash'],
+            );
+        });
     }
 }

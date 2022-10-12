@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\News;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\Common\Paginator\Paginate;
 
 class NewsDomainService
 {
@@ -20,9 +20,14 @@ class NewsDomainService
         return $this->repository->get($id);
     }
 
-    public function getPaginate(): LengthAwarePaginator
+    public function getPaginate(Paginate $paginate): NewsList
     {
-        return $this->repository->getPaginate();
+        return $this->repository->getPaginate($paginate);
+    }
+
+    public function getCount(): NewCount
+    {
+        return $this->repository->getCount();
     }
 
     public function create(Title $title, Content $content, Status $status): News

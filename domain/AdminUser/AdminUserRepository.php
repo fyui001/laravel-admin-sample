@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\Common\HashedPassword;
+use Domain\Common\RawPositiveInteger;
 
 interface AdminUserRepository
 {
-    public function get(AdminId $id): AdminUser;
-    public function getPaginate(): LengthAwarePaginator;
+    public function getAdminUserList(): AdminUserList;
+    public function get(AdminId $adminId): AdminUser;
+    public function getByUserId(AdminUserId $adminUserId): AdminUser;
     public function create(
         AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
-        AdminUserName $name,
-        AdminUserRole $role,
-        AdminUserStatus $status
+        HashedPassword $adminUserHashedPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus
     ): AdminUser;
-    public function update(
-        AdminId $id,
-        AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
-        AdminUserName $name,
-        AdminUserRole $role,
-        AdminUserStatus $status
-    ): AdminUser;
-    public function delete(AdminId $id): bool;
+    public function update(AdminUser $adminUser): AdminUser;
+    public function delete(AdminId $adminId): RawPositiveInteger;
 }

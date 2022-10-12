@@ -6,7 +6,7 @@ namespace Domain\Base;
 
 use Courage\CoString;
 
-class BaseValue extends CoString
+abstract class BaseValue extends CoString
 {
     public function __construct(string $value)
     {

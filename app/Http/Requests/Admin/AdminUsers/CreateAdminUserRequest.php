@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\AdminUsers;
 
-use App\Http\Requests\Request as AppRequest;
-use Domain\AdminUser\AdminUserHashedPassword;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\RawPassword;
+use App\Http\Requests\Request as AppRequest;
 
-class UpdateAdminUserRequest extends AppRequest
+class CreateAdminUserRequest extends AppRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the user is authorizpassword_confirmed to make this request.
      *
      * @return bool
      */
     public function authorize(): bool
     {
-        return \Auth::guard('web')->user()->can(
-            'update',
-            \Auth::guard('web')->user()
-        );
+        return true;
     }
 
     /**
@@ -35,8 +32,8 @@ class UpdateAdminUserRequest extends AppRequest
     {
         return [
             'user_id' => 'required|max:255',
-            'password' => 'nullable|min:8',
-            'password_confirm' => 'required_with:password|same:password',
+            'password' => 'required|min:8',
+            'password_confirm' => 'required|same:password',
             'name' => 'required',
             'role' => 'required|int',
             'status' => 'required|int'
@@ -55,7 +52,7 @@ class UpdateAdminUserRequest extends AppRequest
             'user_id.required' => 'ログインIDは必須です',
             'password.required' => 'パスワードは必須です',
             'password.min' => 'パスワードは8文字以上の文字列を入力してください',
-            'password_confirm.required_with' => 'パスワードを変更する場合はパスワード(確認)は必須です',
+            'password_confirm.required' => 'パスワード(確認)は必須です',
             'name.required' => '名前は必須です',
             'role.required' => 'ロールは必須です',
             'status.required' => 'ステータスは必須です',
@@ -80,9 +77,9 @@ class UpdateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getPassword(): AdminUserHashedPassword
+    public function getPassword(): RawPassword
     {
-        return new AdminUserHashedPassword($this->input('password'));
+        return new RawPassword($this->input('password'));
     }
 
     public function getName(): AdminUserName

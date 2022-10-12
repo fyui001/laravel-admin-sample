@@ -4,32 +4,30 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Courage\CoInt\CoInteger;
-use Courage\CoList;
-use Courage\CoString;
 use Domain\Base\BaseEnum;
+use Domain\Common\ListValue;
+use Domain\Common\RawInteger;
+use Domain\Common\RawString;
+
 
 enum AdminUserRole: int implements BaseEnum
 {
     case ROLE_SYSTEM = 1;
-    case ROLE_ADMIN = 2;
-    case ROLE_USER = 3;
+    case ROLE_OPERATOR = 2;
 
-    public function displayName(): Costring
+    public function displayName(): RawString
     {
         return match($this) {
-            self::ROLE_SYSTEM => new CoString('システム管理者'),
-            self::ROLE_ADMIN => new CoString('管理者'),
-            self::ROLE_USER => new Costring('一般ユーザー'),
+            self::ROLE_SYSTEM => new RawString('システム管理者'),
+            self::ROLE_OPERATOR => new RawString('管理者'),
         };
     }
 
-    public static function displayNameList(): CoList
+    public static function displayNameList(): ListValue
     {
-        return new CoList([
-            self::ROLE_SYSTEM->getValue()->getRawValue() => new CoString('システム管理者'),
-            self::ROLE_ADMIN->getValue()->getRawValue() => new CoString('管理者'),
-            self::ROLE_USER->getValue()->getRawValue() => new Costring('一般ユーザー'),
+        return new ListValue([
+            self::ROLE_SYSTEM->getValue()->getRawValue() => new RawString('システム管理者'),
+            self::ROLE_OPERATOR->getValue()->getRawValue() => new RawString('管理者'),
         ]);
     }
 
@@ -37,12 +35,20 @@ enum AdminUserRole: int implements BaseEnum
     {
         return match($this) {
             self::ROLE_SYSTEM => true,
-            default => false,
+            self::ROLE_OPERATOR => false,
         };
     }
 
-    public function getValue(): CoInteger
+    public function isOperator(): bool
     {
-        return new CoInteger($this->value);
+        return match($this) {
+            self::ROLE_SYSTEM => false,
+            self::ROLE_OPERATOR => true,
+        };
+    }
+
+    public function getValue(): RawInteger
+    {
+        return new RawInteger($this->value);
     }
 }

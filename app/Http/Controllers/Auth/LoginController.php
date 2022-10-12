@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Http\Requests\Auth\LoginRequest;
+use Domain\AdminUser\AdminUserStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
@@ -69,7 +70,11 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request): RedirectResponse
     {
-        $credentials = $request->only('user_id', 'password');
+        $credentials = [
+            'user_id' => $request->getUserId()->getRawValue(),
+            'password' => $request->getRawPassword()->getRawValue(),
+            'status' => AdminUserStatus::STATUS_VALID->getValue()->getRawValue(),
+        ];
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -83,7 +88,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::guard('web')->attempt($credentials)) {
             return redirect()->intended(route('admin.auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
 
@@ -97,7 +102,7 @@ class LoginController extends Controller
      */
     public function logout(): RedirectResponse
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
         return redirect(route('admin.auth.login'));
     }
 
