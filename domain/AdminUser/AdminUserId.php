@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Domain\Base\BaseValue;
+use Domain\Common\RawString;
 
-class AdminUserId extends BaseValue
+class AdminUserId extends RawString
 {
 }

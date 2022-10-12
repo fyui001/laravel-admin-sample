@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Infra\EloquentRepository;
 
-use Domain\AdminUser\AdminUserHashedPassword;
+use Domain\AdminUser\AdminUserList;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
-use Domain\AdminUser\AdminUser as AdminUserDomain;
+use Domain\AdminUser\AdminUser;
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
+use Domain\Common\HashedPassword;
+use Domain\Common\RawPositiveInteger;
+use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
-use Infra\EloquentModels\AdminUser;
+use Illuminate\Database\Eloquent\Collection;
 use Infra\EloquentModels\AdminUser as AdminUserModel;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminUserRepository implements AdminUserRepositoryInterface
 {
-    public function get(AdminId $id): AdminUserDomain
+    public function get(AdminId $id): AdminUser
     {
         $model = AdminUserModel::where(['id' => $id->getRawValue()])
             ->first();
@@ -30,18 +32,34 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $model->toDomain();
     }
 
-    public function getPaginate(): LengthAwarePaginator
+    public function getAdminUserList(): AdminUserList
     {
-        return AdminUserModel::paginate(15);
+        /** @var Collection $collection */
+        $collection = AdminUserModel::get();
+
+        return new AdminUserList($collection->map(function(AdminUserModel $model) {
+            return $model->toDomain();
+        })->toArray());
+    }
+
+    public function getByUserId(AdminUserId $adminUserId): AdminUser
+    {
+        $model = AdminUserModel::where(['user_id' => $adminUserId->getRawValue()])->first();
+
+        if (!$model) {
+            throw new NotFoundException();
+        }
+
+        return $model->toDOmain();
     }
 
     public function create(
         AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
+        HashedPassword $password,
         AdminUserName $name,
         AdminUserRole $role,
         AdminUserStatus $status
-    ): AdminUserDomain {
+    ): AdminUser {
         $model = new AdminUserModel();
 
         $model->user_id = $adminUserId->getRawValue();
@@ -55,33 +73,35 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $model->toDomain();
     }
 
-    public function update(
-        AdminId $id,
-        AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
-        AdminUserName $name,
-        AdminUserRole $role,
-        AdminUserStatus $status
-    ): AdminUserDomain {
-        $model = AdminUserModel::where('id', $id)->first();
+    public function update(AdminUser $adminUser): AdminUser
+    {
+        $model = AdminUserModel::where(['id' => $adminUser->getId()->getRawValue()])->first();
 
-        $model->user_id = $adminUserId->getRawValue();
-        $model->password = $password->getRawValue();
-        $model->name = $name->getRawValue();
-        $model->role = $role->getValue()->getRawValue();
-        $model->status = $status->getValue()->getRawValue();
+        $model->user_id = $adminUser->getUserId()->getRawValue();
+        $model->password = $adminUser->getPassword()->getRawValue();
+        $model->name = $adminUser->getName()->getRawValue();
+        $model->role = $adminUser->getRole()->getValue()->getRawValue();
+        $model->status = $adminUser->getStatus()->getValue()->getRawValue();
+
         $model->save();
 
         return $model->toDomain();
     }
 
-    public function delete(AdminId $id): bool
+    public function delete(AdminId $adminId): RawPositiveInteger
     {
-        $model = AdminUser::where('id', $id)->first();
+        $model = AdminUserModel::where(['id' => $adminId->getRawValue()]);
+
         if (!$model) {
             throw new NotFoundException();
         }
 
-        return $model->delete();
+        $result = $model->delete();
+
+        if (!$result) {
+            throw new LogicException();
+        }
+
+        return new RawPositiveInteger($result);
     }
 }

@@ -53,7 +53,13 @@ class AdminUserController extends AppController
      */
     public function store(CreateAdminUserRequest $request): RedirectResponse
     {
-        $this->adminUserService->createUser($request);
+        $this->adminUserService->createUser(
+            $request->getAdminUserId(),
+            $request->getPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus(),
+        );
         return redirect(route('admin.admin_users.index'))
                 ->with('success', 'ユーザーを保存しました');
     }
@@ -76,11 +82,15 @@ class AdminUserController extends AppController
      * @param UpdateAdminUserRequest $request
      * @return RedirectResponse
      */
-    public function update(string $id, UpdateAdminUserRequest $request): RedirectResponse
+    public function update(AdminUser $adminUser, UpdateAdminUserRequest $request): RedirectResponse
     {
         $this->adminUserService->updateUser(
-            new AdminId((int)$id),
-            $request
+            $adminUser->toDomain()->getId(),
+            $request->getAdminUserId(),
+            $request->getPassword(),
+            $request->getName(),
+            $request->getRole(),
+            $request->getStatus(),
         );
         return redirect(route('admin.admin_users.index'))->with([
             'success' => 'ユーザーを編集しました'

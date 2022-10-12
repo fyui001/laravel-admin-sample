@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\News;
+namespace App\Http\Requests\Admin\News;
 
-use App\Http\Requests\Request as AppRequest;
 use Domain\News\Content;
 use Domain\News\Status;
 use Domain\News\Title;
+use App\Http\Requests\Request as AppRequest;
 
-class UpdateNewsRequest extends AppRequest
+class CreateNewsRequest extends AppRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,10 +18,7 @@ class UpdateNewsRequest extends AppRequest
      */
     public function authorize(): bool
     {
-        return \Auth::guard('web')->user()->can(
-            'update',
-            \Auth::guard('web')->user()
-        );
+        return true;
     }
 
     /**

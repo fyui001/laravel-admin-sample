@@ -4,59 +4,61 @@ declare(strict_types=1);
 
 namespace Domain\AdminUser;
 
-use Illuminate\Pagination\LengthAwarePaginator;
+use Domain\Common\RawPassword;
+use Domain\Common\RawPositiveInteger;
+use Illuminate\Contracts\Hashing\Hasher;
 
 class AdminUserDomainService
 {
-    private AdminUserRepository $repository;
-
     public function __construct(
-        AdminUserRepository $repository
+        private AdminUserRepository $adminUserRepository,
+        private Hasher $hasher,
     ) {
-        $this->repository = $repository;
     }
 
-    public function getAdminUserPaginator(): LengthAwarePaginator
+    public function getAdminUserList(): AdminUserList
     {
-        return $this->repository->getPaginate();
+        return $this->adminUserRepository->getAdminUserList();
     }
 
-    public function create(
+    public function createAdminUser(
         AdminUserId $adminUserId,
-        AdminUserHashedPassword $password,
-        AdminUserName $name,
-        AdminUserRole $role,
-        AdminUSerStatus $status
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
     ): AdminUser {
-        return $this->repository->create(
+        return $this->adminUserRepository->create(
             $adminUserId,
-            $password,
-            $name,
-            $role,
-            $status
+            $adminUserRawPassWord->hash($this->hasher),
+            $adminUserName,
+            $adminUserRole,
+            $adminUserStatus,
         );
     }
 
-    public function update(
-        AdminId $id,
-        AdminUserId $userId,
-        AdminUserHashedPassword $password,
-        AdminUserName $name,
-        AdminUserRole $role,
-        AdminUserStatus $status
+    public function updateAdminUser(
+        AdminId $adminId,
+        AdminUserId $adminUserId,
+        RawPassword $adminUserRawPassWord,
+        AdminUserName $adminUserName,
+        AdminUserRole $adminUserRole,
+        AdminUserStatus $adminUserStatus,
     ): AdminUser {
-        return $this->repository->update(
-            $id,
-            $userId,
-            $password,
-            $name,
-            $role,
-            $status
+        return $this->adminUserRepository->update(
+            new AdminUser(
+                $adminId,
+                $adminUserId,
+                $adminUserRawPassWord->hash($this->hasher),
+                $adminUserName,
+                $adminUserRole,
+                $adminUserStatus,
+            )
         );
     }
 
-    public function delete(AdminId $id): bool
+    public function deleteAdminUser(AdminId $adminId): RawPositiveInteger
     {
-        return $this->repository->delete($id);
+        return $this->adminUserRepository->delete($adminId);
     }
 }

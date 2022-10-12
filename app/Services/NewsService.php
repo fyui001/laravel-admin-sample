@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DataTransfer\News\NewsPaginator;
 use App\Services\Service as BaseService;
 use App\Services\Interfaces\NewsServiceInterface;
-use App\Http\Requests\News\CreateNewsRequest;
-use App\Http\Requests\News\UpdateNewsRequest;
+use Domain\Common\Paginator\Paginate;
+use Domain\News\Content;
 use Domain\News\News;
 use Domain\News\NewsDomainService;
 use Domain\News\NewsId;
+use Domain\News\Status;
+use Domain\News\Title;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsService extends BaseService implements NewsServiceInterface
@@ -32,23 +35,31 @@ class NewsService extends BaseService implements NewsServiceInterface
      *
      * @return LengthAwarePaginator
      */
-    public function getNewsList(): LengthAwarePaginator
+    public function getNewsList(Paginate $paginate): NewsPaginator
     {
-        return $this->newsDomainService->getPaginate();
+        $newsList = $this->newsDomainService->getPaginate($paginate);
+
+        return new NewsPaginator(
+            $newsList,
+            $this->newsDomainService->getCount(),
+            $paginate->getPerPage(),
+        );
     }
 
     /**
      * Create news.
      *
-     * @param CreateNewsRequest $request
-     * @return void
+     * @param Title $title
+     * @param Content $content
+     * @param Status $status
+     * @return News
      */
-    public function createNews(CreateNewsRequest $request): News
+    public function createNews(Title $title, Content $content, Status $status): News
     {
         return $this->newsDomainService->create(
-            $request->getTitle(),
-            $request->getContent(),
-            $request->getStatus()
+            $title,
+            $content,
+            $status,
         );
     }
 
@@ -56,15 +67,22 @@ class NewsService extends BaseService implements NewsServiceInterface
      * Update the news.
      *
      * @param NewsId $id
-     * @param UpdateNewsRequest $request
+     * @param Title $title
+     * @param Content $content
+     * @param Status $status
+     * @return News
      */
-    public function updateNews(NewsId $id, UpdateNewsRequest $request): News
-    {
+    public function updateNews(
+        NewsId $id,
+        Title $title,
+        Content $content,
+        Status $status,
+    ): News {
         return $this->newsDomainService->update(
             $id,
-            $request->getTitle(),
-            $request->getContent(),
-            $request->getStatus()
+            $title,
+            $content,
+            $status,
         );
     }
 
