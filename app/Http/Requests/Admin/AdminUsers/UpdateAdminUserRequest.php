@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\AdminUsers;
+namespace App\Http\Requests\Admin\AdminUsers;
 
 use App\Http\Requests\Request as AppRequest;
 use Domain\AdminUser\AdminUserId;

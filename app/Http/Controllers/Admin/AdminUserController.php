@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
 use App\Services\Interfaces\AdminUserServiceInterface;
-use App\Http\Requests\AdminUsers\CreateAdminUserRequest;
-use App\Http\Requests\AdminUsers\UpdateAdminUserRequest;
+use App\Http\Requests\Admin\AdminUsers\CreateAdminUserRequest;
+use App\Http\Requests\Admin\AdminUsers\UpdateAdminUserRequest;
 use Domain\AdminUser\AdminId;
 use Infra\EloquentModels\AdminUser;
 use Illuminate\View\View;

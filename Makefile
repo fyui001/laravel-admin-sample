@@ -29,9 +29,9 @@ test_seed:
 	@docker-compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
 
 test:
-	@docker-compose exec app ./vendor/bin/phpunit
+	@docker-compose exec app bash -c "vendor/bin/phpunit --testdox --colors=always"
 
-ssh:
+bash:
 	@docker-compose exec app bash
 
 ide_halper:

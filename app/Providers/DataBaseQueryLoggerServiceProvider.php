@@ -28,7 +28,7 @@ class DataBaseQueryLoggerServiceProvider extends ServiceProvider
         if ($this->app->environment("local")) {
             \DB::listen(function ($query) {
                 $route = 'NOT URL';
-                if (method_exists(\Request::route(), 'getName')) {
+                if (method_exists(new \Request(), 'getName')) {
                     $route = \Request::route()->getName();
                 }
                 $sql = $query->sql;
