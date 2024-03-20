@@ -1,5 +1,5 @@
 ## composer
-FROM composer:2.4.1 AS composer-cache
+FROM composer:2.7.1 AS composer-cache
 WORKDIR /code
 # copy only composer files for caching
 COPY composer.json composer.lock /code/
@@ -8,9 +8,7 @@ COPY composer.json composer.lock /code/
 RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
 ## appliation
-FROM php:8.1-fpm
-
-ARG TZ
+FROM php:8.2-fpm
 
 COPY --from=composer-cache /usr/bin/composer /usr/bin/composer
 
@@ -30,8 +28,13 @@ RUN apt update && \
     libmemcached-dev \
     unzip \
     zlib1g-dev \
-    libonig-dev
+    libonig-dev \
+    default-mysql-client
 
-RUN pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    docker-php-ext-install bcmath intl pdo_mysql opcache
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install bcmath intl pdo_mysql opcache
+
+# RUN pecl install xdebug && \
+    #docker-php-ext-enable xdebug && \
