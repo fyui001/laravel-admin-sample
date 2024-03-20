@@ -16,19 +16,24 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin.news.store'), 'method' => 'post', 'class' => 'form-horizontal']) }}
+<form action="{{ route('admin.news.store') }}"  class="form-horizontal" method="POST">
+    @csrf
     <div class="form-group">
         <label for="InputTitle">Title</label>
-        {{ Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
+        <input name="title" value="{{ old('title') }}" class="form-control" placeholder="Enter title" required>
     </div>
     <div class="form-group">
         <label for="TexteareaContent">Content</label>
-        {{ Form::textarea('content', old('content'), ['class' => 'form-control', 'rows' => 5, 'placeholder' => 'Content', 'required' => true]) }}
+        <textarea name="content" value="{{ old('content') }}" class="form-control" placeholder="Content" required />
     </div>
     <div class="form-group">
         <label for="InputState">State</label>
-        {{ Form::select('status', \Domain\News\Status::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
+        <select class="form-control selectpicker", name="status" required>
+            @foreach( \Domain\News\Status::displayNameList() as $key => $value)
+                <option class="btn btn-link" key="{{ $key }}">{{ $value }}</option>
+            @endforeach
+        </select>
     </div>
     <button type="submit" class="btn btn-round btn-info">Submit</button>
-{{ Form::close() }}
+</form>
 @endsection

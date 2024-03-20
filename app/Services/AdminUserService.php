@@ -10,12 +10,10 @@ use Domain\AdminUser\AdminUserList;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
-use App\Services\Service as BaseService;
-use App\Services\Interfaces\AdminUserServiceInterface;
 use Domain\AdminUser\AdminUserDomainService;
 use Domain\Common\RawPassword;
 
-class AdminUserService extends BaseService implements AdminUserServiceInterface
+class AdminUserService
 {
     protected AdminUserDomainService $adminUserDomainService;
 

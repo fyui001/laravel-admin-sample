@@ -6,49 +6,71 @@ namespace Domain\AdminUser;
 
 use Domain\Base\BaseEnum;
 use Domain\Common\ListValue;
-use Domain\Common\RawInteger;
 use Domain\Common\RawString;
 
 
-enum AdminUserRole: int implements BaseEnum
+enum AdminUserRole: string implements BaseEnum
 {
-    case ROLE_SYSTEM = 1;
-    case ROLE_OPERATOR = 2;
+    case SYSTEM = 'SYSTEM';
+    case ADMIN = 'ADMIN';
+    case OPERATOR = 'OPERATOR';
+    case NONE = 'NONE';
+
 
     public function displayName(): RawString
     {
-        return match($this) {
-            self::ROLE_SYSTEM => new RawString('システム管理者'),
-            self::ROLE_OPERATOR => new RawString('管理者'),
+        return match ($this) {
+            self::SYSTEM => new RawString('システム管理者'),
+            self::ADMIN => new RawString('管理者'),
+            self::OPERATOR => new RawString('オペレーター'),
+            self::NONE => new RawString('権限なし'),
         };
     }
 
     public static function displayNameList(): ListValue
     {
         return new ListValue([
-            self::ROLE_SYSTEM->getValue()->getRawValue() => new RawString('システム管理者'),
-            self::ROLE_OPERATOR->getValue()->getRawValue() => new RawString('管理者'),
+            self::SYSTEM->getValue()->getRawValue() => new RawString('システム管理者'),
+            self::ADMIN->getValue()->getRawValue() => new RawString('管理者'),
+            self::OPERATOR->getValue()->getRawValue() => new RawString('オペレーター'),
+            self::NONE->getValue()->getRawValue() => new RawString('権限なし'),
         ]);
     }
 
     public function isSystem(): bool
     {
-        return match($this) {
-            self::ROLE_SYSTEM => true,
-            self::ROLE_OPERATOR => false,
+        return match ($this) {
+            self::SYSTEM => true,
+            self::ADMIN, self::OPERATOR, self::NONE => false,
+        };
+    }
+
+    public function isAdmin(): bool
+    {
+        return match ($this) {
+            self::ADMIN => true,
+            self::SYSTEM, self::OPERATOR, self::NONE => false,
         };
     }
 
     public function isOperator(): bool
     {
-        return match($this) {
-            self::ROLE_SYSTEM => false,
-            self::ROLE_OPERATOR => true,
+        return match ($this) {
+            self::OPERATOR => true,
+            self::SYSTEM, self::ADMIN, self::NONE => false,
         };
     }
 
-    public function getValue(): RawInteger
+    public function isNone(): bool
     {
-        return new RawInteger($this->value);
+        return match ($this) {
+            self::NONE => true,
+            self::SYSTEM, self::ADMIN, self::OPERATOR => false,
+        };
+    }
+
+    public function getValue(): RawString
+    {
+        return new RawString($this->value);
     }
 }

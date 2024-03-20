@@ -35,8 +35,8 @@ class CreateAdminUserRequest extends AppRequest
             'password' => 'required|min:8',
             'password_confirm' => 'required|same:password',
             'name' => 'required',
-            'role' => 'required|int',
-            'status' => 'required|int'
+            'role' => 'required|string',
+            'status' => 'required|string'
         ];
     }
 
@@ -77,7 +77,7 @@ class CreateAdminUserRequest extends AppRequest
         return new AdminUserId($this->input('user_id'));
     }
 
-    public function getPassword(): RawPassword
+    public function getPasswordValueObject(): RawPassword
     {
         return new RawPassword($this->input('password'));
     }
@@ -89,11 +89,11 @@ class CreateAdminUserRequest extends AppRequest
 
     public function getRole(): AdminUserRole
     {
-        return AdminUserRole::tryFrom((int)$this->input('role'));
+        return AdminUserRole::tryFrom($this->input('role'));
     }
 
     public function getStatus(): AdminUserStatus
     {
-        return AdminUserStatus::tryFrom((int)$this->input('status'));
+        return AdminUserStatus::tryFrom($this->input('status'));
     }
 }

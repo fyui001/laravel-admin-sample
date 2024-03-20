@@ -1,14 +1,33 @@
 # セットアップ
+Makefileにコマンドをまとめてます
 
-```shell script
-cp .env.example .env
+1. dotenvとdocker composeファイルの初期化
+
+```shell
+make init
 ```
 
-dockerのローカル開発環境は各自違うと思うのでdocker-compose.example.ymlから
-docker-compose.ymlをコピーし適宜書き換えて以下を実行
+2. 初期セットアップ
+
+```shell
+make setup
+```
+
+
+# コンテナ起動
 
 ```shell script
-cp docker-compose.example.yml docker-compose.yml
-# 書き換え不要ならそのまま実行
 docker-compose up -d
+```
+
+# テスト実行
+
+## Feature Test
+```shell
+make test_feature
+```
+
+## Unit Test
+```shell
+make test_unit
 ```

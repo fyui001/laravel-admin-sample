@@ -1,9 +1,11 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
 parameters:
     level: 2
     paths:
         - app
-    ignoreErrors:
-        - '#Call to an undefined method \$this\(App\\Http\\Controllers\\Auth\\LoginController\)::fireLockoutEvent\(\).#'
-        - '#Call to an undefined method \$this\(App\\Http\\Controllers\\Auth\\LoginController\)::sendLockoutResponse\(\).#'
+     # Laravel固有の型が緩いところでエラーが多数出るので無視する
+     checkGenericClassInNonGenericObjectType: false
+     ignoreErrors:
+         - message: '#.* with no value type specified in iterable type array.#'
+         - message: '#.* type has no value type specified in iterable type array.#'

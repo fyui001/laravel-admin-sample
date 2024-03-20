@@ -17,13 +17,13 @@ class CreateAdminUsersTable extends Migration
     public function up()
     {
         Schema::create('admin_users', function (Blueprint $table) {
-            $table->bigIncrements('id')->comment('id');
+            $table->id()->comment('id');
             $table->string('user_id')->unique('UNQ_ADMIN_USER_ID')->comment('管理者ID');
             $table->string('password')->comment('パスワード');
             $table->string('name')->comment('名前');
-            $table->boolean('role')->default(0)->comment('ロール');
-            $table->boolean('status')->default(1)->comment('ステータス');
-            $this->dateTimes($table);
+            $table->string('role')->comment('ロール');
+            $table->string('status')->comment('ステータス');
+            $table->datetimes();
         });
     }
 

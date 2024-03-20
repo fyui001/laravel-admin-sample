@@ -6,7 +6,7 @@ namespace Domain\AdminUser;
 
 use Domain\Common\HashedPassword;
 
-class AdminUser
+readonly class AdminUser
 {
 
     public function __construct(

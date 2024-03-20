@@ -57,8 +57,8 @@ class AdminUserDomainService
         );
     }
 
-    public function deleteAdminUser(AdminId $adminId): RawPositiveInteger
+    public function deleteAdminUser(AdminId $adminId): void
     {
-        return $this->adminUserRepository->delete($adminId);
+        $this->adminUserRepository->delete($adminId);
     }
 }

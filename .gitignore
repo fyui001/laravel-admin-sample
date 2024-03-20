@@ -10,8 +10,8 @@
 !/docker/db/data/.gitkeep
 .env
 .env.backup
-docker-compose.yml
-.phpunit.result.cache
+compose.yml
+.phpunit.cache/
 Homestead.json
 Homestead.yaml
 npm-debug.log

@@ -17,11 +17,11 @@ class CreateNews extends Migration
     public function up()
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('title', 255);
-            $table->text('content');
-            $table->tinyInteger('status')->default(0);
-            $this->dateTimes($table);
+            $table->id();
+            $table->string('title', 255)->comment('タイトル');
+            $table->text('content')->comment('本分');
+            $table->string('status');
+            $table->datetimes();
         });
     }
 

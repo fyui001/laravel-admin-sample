@@ -1,7 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use Domain\Base\BaseBooleanValue;
+use Domain\Common\CreatedAt;
+use Domain\Common\UpdatedAt;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,9 +25,9 @@ class UsersSeeder extends Seeder
             'password' => Hash::make('hogehoge'),
             'name' => '松井恵理子',
             'access_token' => '',
-            'del_flg' => 0,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'is_deleted' => BaseBooleanValue::FALSE,
+            'created_at' => CreatedAt::now()->getSqlTimeStamp(),
+            'updated_at' => UpdatedAt::now()->getSqlTimeStamp(),
         ]);
     }
 }
