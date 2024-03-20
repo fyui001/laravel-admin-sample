@@ -11,7 +11,7 @@
 .env
 .env.backup
 compose.yml
-.phpunit.result.cache
+.phpunit.cache/
 Homestead.json
 Homestead.yaml
 npm-debug.log

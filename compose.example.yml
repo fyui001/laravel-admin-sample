@@ -24,7 +24,7 @@ services:
   js:
     image: node:20.11.1-slim
     working_dir: /code
-    command: ["sh", "-c", "yarn install && yarn dev"]
+    command: ["sh", "-c", "yarn install && yarn watch"]
     volumes:
       - .:/code:cached
       - node-modules:/code/node_modules
