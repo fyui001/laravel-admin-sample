@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DataTransfer\News\NewsPaginator;
-use App\Services\Service as BaseService;
-use App\Services\Interfaces\NewsServiceInterface;
 use Domain\Common\Paginator\Paginate;
 use Domain\News\Content;
 use Domain\News\News;
@@ -16,7 +14,7 @@ use Domain\News\Status;
 use Domain\News\Title;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class NewsService extends BaseService implements NewsServiceInterface
+class NewsService
 {
     private NewsDomainService $newsDomainService;
 

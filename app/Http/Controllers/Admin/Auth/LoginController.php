@@ -73,7 +73,7 @@ class LoginController extends Controller
         $credentials = [
             'user_id' => $request->getUserId()->getRawValue(),
             'password' => $request->getRawPassword()->getRawValue(),
-            'status' => AdminUserStatus::STATUS_VALID->getValue()->getRawValue(),
+            'status' => AdminUserStatus::VALID->getValue()->getRawValue(),
         ];
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle

@@ -1,3 +1,6 @@
+@php use Domain\AdminUser\AdminUserRole;use Domain\AdminUser\AdminUserStatus; @endphp
+
+
 @extends('layouts.base', ['activePage' => 'AdminUser'])
 
 @section('content-header')
@@ -16,31 +19,40 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin.admin_users.store'), 'method' => 'post']) }}
-    <div class="form-group info">
-        <label for="InputUserId">User ID</label>
-        {{ Form::text('user_id', old('user_id'), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="InputPassword">Password</label>
-        {{ Form::password('password', ['class' => 'form-control input-sm', 'placeholder' => '8 characters or more', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="InputPasswordConfirm">Password Confirm</label>
-        {{ Form::password('password_confirm', ['class' => 'form-control input-sm', 'placeholder' => '', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="TextareaUserName">User Name</label>
-        {{ Form::text('name', old('name'), ['class' => 'form-control input-sm', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="InputRole">Role</label>
-        {{ Form::select('role', \Domain\AdminUser\AdminUserRole::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="InputState">State</label>
-        {{ Form::select('status', \Domain\AdminUser\AdminUserStatus::displayNameList(), old('body'), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
-    </div>
-    <button type="submit" class="btn btn-round btn-info">Submit</button>
-{{ Form::close() }}
+    <form action="{{ route('admin.admin_users.store') }}" method="POST">
+        @csrf
+        <div class="form-group info">
+            <label for="InputUserId">User ID</label>
+            <input name="user_id" value="{{ old('user_id') }}" class="form-control" placeholder="Enter title" required>
+        </div>
+        <div class="form-group">
+            <label for="InputPassword">Password</label>
+            <input type="password" name="password" class="form-control input-sm" placeholder="8 characters or more" required>
+        </div>
+        <div class="form-group">
+            <label for="InputPasswordConfirm">Password Confirm</label>
+            <input type="password" name="password_confirm" class="form-control input-sm" required>
+        </div>
+        <div class="form-group">
+            <label for="TextareaUserName">User Name</label>
+            <input type="text" name="name" value="{{ old('name') }}" class="form-control input-sm" required>
+        </div>
+        <div class="form-group">
+            <label for="InputRole">Role</label>
+            <select class="form-control selectpicker" name="role" required>
+                @foreach(AdminUserRole::displayNameList() as $key => $value)
+                    <option class="btn btn-link" value="{{ $key }}" @if(old('role') == $key) selected @endif>{{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="InputState">State</label>
+            <select class="form-control selectpicker" name="status" required>
+                @foreach (AdminUserStatus::displayNameList() as $key => $value)
+                    <option class="btn btn-link" value="{{ $key }}" @if(old('status') == $key) selected @endif>{{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="btn btn-round btn-info">Submit</button>
+    </form>
 @endsection

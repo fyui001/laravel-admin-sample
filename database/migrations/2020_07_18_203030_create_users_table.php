@@ -17,13 +17,13 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id')->comment('id');
+            $table->id()->comment('id');
             $table->string('user_id')->unique('UNQ_USER_ID')->comment('ユーザーID');
             $table->string('password')->comment('パスワード');
-            $table->string('access_token')->comment('アクセストークン');
             $table->string('name')->comment('名前');
-            $table->string('del_flg')->comment('削除フラグ');
-            $this->dateTimes($table);
+            $table->boolean('is_deleted')->comment('削除フラグ');
+            $table->string('access_token')->comment('アクセストークン');
+            $table->datetimes();
         });
     }
 

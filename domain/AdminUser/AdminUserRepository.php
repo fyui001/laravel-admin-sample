@@ -20,5 +20,5 @@ interface AdminUserRepository
         AdminUserStatus $adminUserStatus
     ): AdminUser;
     public function update(AdminUser $adminUser): AdminUser;
-    public function delete(AdminId $adminId): RawPositiveInteger;
+    public function delete(AdminId $adminId): void;
 }

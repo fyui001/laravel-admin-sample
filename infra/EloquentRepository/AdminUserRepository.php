@@ -7,23 +7,21 @@ namespace Infra\EloquentRepository;
 use Domain\AdminUser\AdminUserList;
 use Domain\AdminUser\AdminUserName;
 use Domain\AdminUser\AdminUserRepository as AdminUserRepositoryInterface;
-use Domain\AdminUser\AdminUser;
+use Domain\AdminUser\AdminUser as AdminUserDomain;
 use Domain\AdminUser\AdminId;
 use Domain\AdminUser\AdminUserId;
 use Domain\AdminUser\AdminUserRole;
 use Domain\AdminUser\AdminUserStatus;
 use Domain\Common\HashedPassword;
-use Domain\Common\RawPositiveInteger;
-use Domain\Exception\LogicException;
 use Domain\Exception\NotFoundException;
 use Illuminate\Database\Eloquent\Collection;
-use Infra\EloquentModels\AdminUser as AdminUserModel;
+use Infra\EloquentModels\AdminUser;
 
 class AdminUserRepository implements AdminUserRepositoryInterface
 {
-    public function get(AdminId $id): AdminUser
+    public function get(AdminId $id): AdminUserDomain
     {
-        $model = AdminUserModel::where(['id' => $id->getRawValue()])
+        $model = AdminUser::where(['id' => $id->getRawValue()])
             ->first();
         if (!$model) {
             throw new NotFoundException();
@@ -35,22 +33,25 @@ class AdminUserRepository implements AdminUserRepositoryInterface
     public function getAdminUserList(): AdminUserList
     {
         /** @var Collection $collection */
-        $collection = AdminUserModel::get();
+        $collection = AdminUser::get();
 
-        return new AdminUserList($collection->map(function(AdminUserModel $model) {
+        return new AdminUserList($collection->map(function(AdminUser $model) {
             return $model->toDomain();
         })->toArray());
     }
 
-    public function getByUserId(AdminUserId $adminUserId): AdminUser
+    public function getByUserId(AdminUserId $adminUserId): AdminUserDomain
     {
-        $model = AdminUserModel::where(['user_id' => $adminUserId->getRawValue()])->first();
+        $model = AdminUser::where([
+            'user_id' => $adminUserId->getRawValue(),
+            'status' => AdminUserStatus::VALID->getValue()->getRawValue(),
+        ])->first();
 
-        if (!$model) {
+        if (is_null($model)) {
             throw new NotFoundException();
         }
 
-        return $model->toDOmain();
+        return $model->toDomain();
     }
 
     public function create(
@@ -59,8 +60,8 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         AdminUserName $name,
         AdminUserRole $role,
         AdminUserStatus $status
-    ): AdminUser {
-        $model = new AdminUserModel();
+    ): AdminUserDomain {
+        $model = new AdminUser();
 
         $model->user_id = $adminUserId->getRawValue();
         $model->password = $password->getRawValue();
@@ -73,9 +74,13 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $model->toDomain();
     }
 
-    public function update(AdminUser $adminUser): AdminUser
+    public function update(AdminUserDomain $adminUser): AdminUserDomain
     {
-        $model = AdminUserModel::where(['id' => $adminUser->getId()->getRawValue()])->first();
+        $model = AdminUser::where(['id' => $adminUser->getId()->getRawValue()])->first();
+
+        if (is_null($model)) {
+            throw new NotFoundException();
+        }
 
         $model->user_id = $adminUser->getUserId()->getRawValue();
         $model->password = $adminUser->getPassword()->getRawValue();
@@ -88,20 +93,16 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $model->toDomain();
     }
 
-    public function delete(AdminId $adminId): RawPositiveInteger
+    public function delete(AdminId $adminId): void
     {
-        $model = AdminUserModel::where(['id' => $adminId->getRawValue()]);
+        $model = AdminUser::where(['id' => $adminId->getRawValue()])->first();
 
         if (!$model) {
             throw new NotFoundException();
         }
 
-        $result = $model->delete();
+        $model->status = AdminUserStatus::INVALID->getValue()->getRawValue();
 
-        if (!$result) {
-            throw new LogicException();
-        }
-
-        return new RawPositiveInteger($result);
+        $model->save();
     }
 }

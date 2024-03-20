@@ -16,20 +16,26 @@
 @endsection
 
 @section('content')
-{{ Form::open(['url' => route('admin.news.update', $news->id()), 'method' => 'put', 'class' => 'form-horizontal']) }}
-    <?php /** @vae News $news */ ?>
-    <div class="form-group">
-        <label for="InputTitle">Title</label>
-        {{ Form::text('title', old('title', $news->getTitle()), ['class' => 'form-control', 'placeholder' => 'Enter title', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="TexteareaContent">Content</label>
-        {{ Form::textarea('content', old('content', $news->getContent()), ['class' => 'form-control', 'rows' => 5, 'placeholder' => 'Content', 'required' => true]) }}
-    </div>
-    <div class="form-group">
-        <label for="InputState">State</label>
-        {{ Form::select('status', \Domain\News\Status::displayNameList(), old('status', $news->getStatus()->getValue()->getRawValue()), ['class' => 'form-control selectpicker', 'data-style' => 'btn btn-link', 'required' => true]) }}
-    </div>
-    <button type="submit" class="btn btn-round btn-info">Submit</button>
-{{ Form::close() }}
+    <form action="{{ route('admin.news.store', route('admin.news.update', $news->id()) }}"  class="form-horizontal" method="POST">
+        @csrf
+        @method('put')
+        <?php /** @vae News $news */ ?>
+        <div class="form-group">
+            <label for="InputTitle">Title</label>
+            <input name="title" value="{{ old('title') }}" class="form-control" placeholder="Enter title" required>
+        </div>
+        <div class="form-group">
+            <label for="TexteareaContent">Content</label>
+            <textarea name="content" value="{{ old('content') }}" class="form-control" placeholder="Content" required />
+        </div>
+        <div class="form-group">
+            <label for="InputState">State</label>
+            <select class="form-control selectpicker", name="status" required>
+                @foreach( \Domain\News\Status::displayNameList() as $key => $value)
+                    <option class="btn btn-link" key="{{ $key }}" @if(old('status') == $key) selected @endif>{{ $value }}</option>
+                @endforeach
+            </select>
+        </div>
+        <button type="submit" class="btn btn-round btn-info">Submit</button>
+    </form>
 @endsection
