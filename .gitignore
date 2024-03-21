@@ -1,8 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/js/app.js
-/public/css/app.css
+/public/build
 /public/mix-manifest.json
 /storage/*.key
 /vendor
@@ -10,7 +9,6 @@
 !/docker/db/data/.gitkeep
 .env
 .env.backup
-compose.yml
 .phpunit.cache/
 Homestead.json
 Homestead.yaml

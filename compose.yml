@@ -1,0 +1,63 @@
+services:
+  web:
+    image: nginx:latest
+    depends_on:
+      - app
+    volumes:
+      - ./public:/code/public
+      - ./docker/nginx/conf.d/local.d/default.conf:/etc/nginx/conf.d/default.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laravel-admin-sample.rule=Host(`admin.localhost`)"
+    networks:
+      - default
+      - docker_default
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    tty: true
+    volumes:
+      - .:/code
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - db
+      - js
+    labels:
+      - "traefik.enable=false"
+  js:
+    image: node:20.11.1-slim
+    working_dir: /code
+    command: ["sh", "-c", "yarn install && yarn dev"]
+    expose:
+      - 80
+    volumes:
+      - .:/code
+    networks:
+      - default
+      - docker_default
+    labels:
+      - "treaefik.enable=true"
+      - "traefik.http.routers.laravel-admin-sample-js.rule=Host(`hmr.localhost`)"
+  db:
+    image: mysql:8.3.0
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/0.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ}
+    ports:
+      - 3306:3306
+    labels:
+      - "traefik.enable=false"
+
+volumes:
+  db-store:
+
+networks:
+  docker_default:
+    external: true
+    name: docker_default

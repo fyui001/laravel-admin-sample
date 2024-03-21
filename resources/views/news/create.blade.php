@@ -1,8 +1,9 @@
-@extends('layouts.base', ['activePage' => 'News'])
+@extends('vendor.adminlte.page')
 
-@section('content-header')
-<div>
-    <h3>
+@section('title', 'News編集')
+
+@section('content_header')
+    <div class="row">
         <span class="oi oi-share-boxed"></span>
         ニュース作成
     </h3>

@@ -1,10 +1,11 @@
-@extends('layouts.base', ['activePage' => 'News'])
+@extends('vendor.adminlte.page')
 
-@section('content-header')
-<div>
-    <h3>
+@section('title', 'News編集')
+
+@section('content_header')
+    <div class="row">
         <span class="oi oi-share-boxed"></span>
-        ニュース編集
+        News編集
     </h3>
     <div class="text-right">
         <a href="{{ route('admin.news.index') }}" class="btn btn-round btn-info">

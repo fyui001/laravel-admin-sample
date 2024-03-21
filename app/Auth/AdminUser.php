@@ -25,6 +25,16 @@ class AdminUser implements Authenticatable
     }
 
     /**
+     * NOTE: admin-lteがnameを呼ぶので対処
+     */
+    public function __get(string $name)
+    {
+        if ($name = 'name') {
+            return $this->getAdminUser()->getName()->getRawValue();
+        }
+    }
+
+    /**
      * @param AdminUserDomain $adminUser
      */
     public function setAdminUser(AdminUserDomain $adminUser): void

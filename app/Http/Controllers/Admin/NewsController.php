@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller as AppController;
 use App\Http\Requests\Admin\AdminRequest;
-use App\Services\Interfaces\NewsServiceInterface;
 use App\Http\Requests\Admin\News\CreateNewsRequest;
 use App\Http\Requests\Admin\News\UpdateNewsRequest;
+use App\Services\NewsService;
 use Domain\Common\Paginator\Paginate;
 use Domain\News\NewsId;
 use Illuminate\View\View;
@@ -17,12 +17,9 @@ use Infra\EloquentModels\News;
 
 class NewsController extends AppController
 {
-    protected NewsServiceInterface $newsService;
-
-    public function __construct(NewsServiceInterface $newsService)
+    public function __construct(private readonly NewsService $newsService)
     {
         parent::__construct();
-        $this->newsService = $newsService;
     }
 
     /**

@@ -1,7 +1,13 @@
-@extends('layouts.base', ['activePage' => 'AdminUser'])
+@extends('vendor.adminlte.page')
 
-@section('content-header')
-<div>
+@section('title', '管理ユーザー一覧')
+
+@section('content_header')
+<div class="row">
+        <h3 class="col">
+            <span class="oi oi-person"></span>
+            管理ユーザー一覧
+        </h3>
     <div class="text-right">
         <a href="{{ route('admin.admin_users.create') }}" class="btn btn-round btn-info" rel="tooltip">
             <span class="oi oi-plus"></span> 新規作成

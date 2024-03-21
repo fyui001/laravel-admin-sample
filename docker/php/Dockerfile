@@ -12,7 +12,11 @@ FROM php:8.2-fpm
 
 COPY --from=composer-cache /usr/bin/composer /usr/bin/composer
 
+
 WORKDIR /code
+
+# copy app sources
+COPY  . ./
 
 RUN apt update && \
     apt full-upgrade -y && \

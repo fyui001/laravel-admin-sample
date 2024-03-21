@@ -1,14 +1,16 @@
 @php use Domain\AdminUser\AdminUserRole;use Domain\AdminUser\AdminUserStatus; @endphp
 
 
-@extends('layouts.base', ['activePage' => 'AdminUser'])
+@extends('vendor.adminlte.page')
 
-@section('content-header')
-<div>
-    <h3>
-        <span class="oi oi-person"></span>
-        管理ユーザー作成
-    </h3>
+@section('title', '管理ユーザー作成')
+
+@section('content_header')
+    <div class="row">
+        <h3 class="col">
+            <span class="oi oi-person"></span>
+            管理ユーザー作成
+        </h3>
     <div class="text-right">
         <a href="{{ route('admin.admin_users.index') }}" class="btn btn-round btn-info">
             <span class="oi oi-chevron-left"></span>

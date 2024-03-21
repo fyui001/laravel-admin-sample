@@ -1,8 +1,10 @@
-@extends('layouts.base', ['activePage' => 'News'])
+@extends('vendor.adminlte.page')
 
-@section('content-header')
-<div>
-    <h3>
+@section('title', 'ニュース一覧')
+
+@section('content_header')
+<div class="row">
+    <h3 class="col">
         <span class="oi oi-share-boxed"></span>
         ニュース一覧 ( 全{{ $news->count() }}件 )
     </h3>
