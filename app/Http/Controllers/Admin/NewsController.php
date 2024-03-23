@@ -81,6 +81,7 @@ class NewsController extends AppController
         $news = $this->newsService->getNews(
             $news->toDomain()->id()
         );
+        //dd($news);
         return view('news.edit', compact('news'));
     }
 

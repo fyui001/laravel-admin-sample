@@ -8,6 +8,7 @@ use Domain\News\Content;
 use Domain\News\Status;
 use Domain\News\Title;
 use App\Http\Requests\Request as AppRequest;
+use Illuminate\Validation\Rule;
 
 class CreateNewsRequest extends AppRequest
 {
@@ -31,7 +32,10 @@ class CreateNewsRequest extends AppRequest
         return [
             'title' => 'required|max:255',
             'content' => 'required|max:65535',
-            'status' => 'required|int'
+            'status' => [
+                'required',
+                Rule::in(Status::cases()),
+            ],
         ];
     }
 
@@ -69,6 +73,6 @@ class CreateNewsRequest extends AppRequest
 
     public function getStatus(): Status
     {
-        return Status::tryFrom((int)$this->input('status'));
+        return Status::tryFrom($this->input('status'));
     }
 }

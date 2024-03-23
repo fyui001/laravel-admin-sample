@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace Domain\News;
 
-class News
+readonly class News
 {
-    private NewsId $id;
-    private Title $title;
-    private Content $content;
-    private Status $status;
 
-    public function __construct(NewsId $id, Title $title, Content $content, Status $status)
-    {
-        $this->id = $id;
-        $this->status = $status;
-        $this->title = $title;
-        $this->content = $content;
+    public function __construct(
+        private NewsId $id,
+        private Title $title,
+        private Content $content,
+        private Status $status
+    ) {
     }
 
     public function id(): NewsId

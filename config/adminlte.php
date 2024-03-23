@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => 'LaravelAdmin',
-    'logo_img' => 'img/logo.png',
+    'logo' => 'LaravelAdminSample',
+    'path' => 'img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => 'img/logo.png',
+            'path' => 'img/AdminLTELogo.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -256,10 +256,10 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/admin/top',
     'logout_url' => 'admin/auth/logout',
     'login_url' => 'admin/auth/login',
-    'register_url' => 'register',
+    'register_url' => '',
     'password_reset_url' => '',
     'password_email_url' => '',
     'profile_url' => false,
