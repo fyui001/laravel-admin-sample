@@ -37,7 +37,7 @@ services:
       - default
       - docker_default
     labels:
-      - "treaefik.enable=true"
+      - "traefik.enable=true"
       - "traefik.http.routers.laravel-admin-sample-js.rule=Host(`hmr.localhost`)"
   db:
     image: mysql:8.3.0
