@@ -6,7 +6,7 @@ export default defineConfig({
         port: 80,
         host: '0.0.0.0',
         hmr: {
-            host: 'hmr.localhost'
+            host: 'hmr.admin.localhost'
         }
     },
     plugins: [
