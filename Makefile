@@ -2,7 +2,6 @@ CONTAINER_ID = `docker-compose ps -q app`
 
 init:
 	@cp .env.example .env
-	@cp compose.example.yml compose.yml
 
 setup:
 	@make build
