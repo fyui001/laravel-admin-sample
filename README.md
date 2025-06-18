@@ -4,30 +4,31 @@ Makefileにコマンドをまとめてます
 1. dotenvとdocker composeファイルの初期化
 
 ```shell
-make init
+task init
 ```
 
 2. 初期セットアップ
 
 ```shell
-make setup
+task up
+task setup
 ```
 
 
 # コンテナ起動
 
 ```shell script
-docker-compose up -d
+taks up
 ```
 
 # テスト実行
 
 ## Feature Test
 ```shell
-make test_feature
+task test_feature
 ```
 
 ## Unit Test
 ```shell
-make test_unit
+task test_unit
 ```
