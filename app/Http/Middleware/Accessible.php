@@ -42,7 +42,8 @@ class Accessible
                 'admin.auth.*',
                 'admin.admin_users.*',
                 'admin.top_page',
-                'admin.news.*'
+                'admin.news.*',
+                'admin.release_flags.*',
             ],
             AdminUserRole::ADMIN->getValue()->getRawValue() => [
                 'admin.auth.*',

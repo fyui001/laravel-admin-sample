@@ -10,6 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\ReleaseFlagController;
 
 Route::redirect('/', '/admin/auth/login');
 
@@ -17,33 +22,40 @@ Route::group(['prefix' => 'admin'], function() {
 
     /* Auth */
     Route::prefix('auth')->group(function () {
-        Route::get('/login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.auth.login');
-        Route::post('/login', 'Admin\Auth\LoginController@login')->name('admin.auth.login.post');
-        Route::post('/logout', 'Admin\Auth\LoginController@logout')->name('admin.auth.logout');
+        Route::get('/login', [LoginController::class, 'showLoginForm'])->name('admin.auth.login');
+        Route::post('/login', [LoginController::class, 'login'])->name('admin.auth.login.post');
+        Route::post('/logout', [LoginController::class, 'logout'])->name('admin.auth.logout');
     });
 
     Route::group(['middleware' => 'auth:web'], function() {
         /* Top Page */
-        Route::get('/top', 'Admin\HomeController@index')->name('admin.top_page');
+        Route::get('/top', [HomeController::class, 'index'])->name('admin.top_page');
 
         /* AdminUsers */
         Route::prefix('admin_users')->group(function() {
-            Route::get('/','Admin\AdminUserController@index')->name('admin.admin_users.index');
-            Route::get('/create','Admin\AdminUserController@create')->name('admin.admin_users.create');
-            Route::post('/','Admin\AdminUserController@store')->name('admin.admin_users.store');
-            Route::get('/{adminUser}/edit','Admin\AdminUserController@edit')->where('user', '[0-9]+')->name('admin.admin_users.edit');
-            Route::put('/{adminUser}','Admin\AdminUserController@update')->where('user', '[0-9]+')->name('admin.admin_users.update');
-            Route::delete('/{adminUser}','Admin\AdminUserController@destroy')->where('user', '[0-9]+')->name('admin.admin_users.destroy');
+            Route::get('/', [AdminUserController::class, 'index'])->name('admin.admin_users.index');
+            Route::get('/create', [AdminUserController::class, 'create'])->name('admin.admin_users.create');
+            Route::post('/', [AdminUserController::class, 'store'])->name('admin.admin_users.store');
+            Route::get('/{adminUser}/edit', [AdminUserController::class, 'edit'])->where('user', '[0-9]+')->name('admin.admin_users.edit');
+            Route::put('/{adminUser}', [AdminUserController::class, 'update'])->where('user', '[0-9]+')->name('admin.admin_users.update');
+            Route::delete('/{adminUser}', [AdminUserController::class, 'destroy'])->where('user', '[0-9]+')->name('admin.admin_users.destroy');
         });
 
         /* News */
         Route::prefix('news')->group(function() {
-            Route::get('/', 'Admin\NewsController@index')->name('admin.news.index');
-            Route::get('/create', 'Admin\NewsController@create')->name('admin.news.create');
-            Route::post('/', 'Admin\NewsController@store')->name('admin.news.store');
-            Route::put('/{news}', 'Admin\NewsController@update')->where('news', '[0-9]+')->name('admin.news.update');
-            Route::get('/{news}/edit', 'Admin\NewsController@edit')->where('news', '[0-9]+')->name('admin.news.edit');
-            Route::delete('/{news}', 'Admin\NewsController@destroy')->where('news', '[0-9]+')->name('admin.news.destroy');
+            Route::get('/', [NewsController::class, 'index'])->name('admin.news.index');
+            Route::get('/create', [NewsController::class, 'create'])->name('admin.news.create');
+            Route::post('/', [NewsController::class, 'store'])->name('admin.news.store');
+            Route::put('/{news}', [NewsController::class, 'update'])->where('news', '[0-9]+')->name('admin.news.update');
+            Route::get('/{news}/edit', [NewsController::class, 'edit'])->where('news', '[0-9]+')->name('admin.news.edit');
+            Route::delete('/{news}', [NewsController::class, 'destroy'])->where('news', '[0-9]+')->name('admin.news.destroy');
+        });
+
+        /* ReleaseFlag */
+        Route::prefix('release_flags')->group(function () {
+            Route::get('/', [ReleaseFlagController::class, 'index'])->name('admin.release_flags.index');
+            Route::get('/edit/{name}', [ReleaseFlagController::class, 'edit'])->name('admin.release_flags.edit');
+            Route::post('/edit/{name}', [ReleaseFlagController::class, 'update'])->name('admin.release_flags.update');
         });
     });
 });

@@ -303,6 +303,18 @@ return [
             'icon' => 'oi oi-people',
             'route' => 'admin.news.index',
         ],
+        [
+            'text' => 'システム設定',
+            'icon' => 'oi oi-cog',
+            'submenu' => [
+                [
+                    'text' => 'Release Flags',
+                    'route' => 'admin.release_flags.index',
+                    'icon' => 'oi oi-flag',
+                    'shift' => 'ml-4',
+                ],
+            ],
+        ]
     ],
 
     /*

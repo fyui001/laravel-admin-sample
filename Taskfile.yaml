@@ -1,0 +1,75 @@
+version: '3'
+
+tasks:
+  setup:
+    cmds:
+      - make build
+      - make up
+      - make composer_install
+      - docker compose exec app php artisan key:generate
+      - make migrate_seed
+      - make cache_clear
+      - make test_seed
+      - make permission
+      - docker compose exec app php artisan storage:link
+
+  docker_build:
+    cmd: docker compose build --no-cache
+
+  composer_install:
+    cmd: docker compose exec app composer install --ignore-platform-reqs
+
+  cache_clear:
+    cmds:
+      - docker compose exec app php artisan cache:clear
+      - docker compose exec app php artisan view:clear
+      - docker compose exec app php artisan route:clear
+      - docker compose exec app php artisan config:clear
+
+  permission:
+    cmd: docker compose exec app chmod -R 777 /code/storage bootstrap/cache
+
+  migrate:
+    cmd: docker compose exec app php artisan migrate
+
+  migrate_seed:
+    cmd: docker compose exec app php artisan migrate:fresh --seed --drop-views
+
+  test_seed:
+    cmd: docker compose exec app php artisan migrate:fresh --seed --drop-views --env=testing
+
+  test_feature:
+    cmd: docker compose exec app bash -c "vendor/bin/phpunit --testsuite Feature --testdox --colors=always"
+
+  test_unit:
+    cmd: docker compose exec app bash -c "vendor/bin/phpunit --testsuite Unit --testdox --colors=always"
+
+  bash:
+    cmd: docker compose exec app bash
+
+  ide_helper:
+    cmd: docker compose exec app php artisan ide-helper:generate
+
+  ide_helper_models:
+    cmd: docker compose exec app php artisan ide-helper:models --dir="infra/EloquentModels"
+
+  up:
+    cmd: docker compose up -d
+
+  down:
+    cmd: docker compose down
+
+  stop:
+    cmd: docker compose stop
+
+  cp_vendor:
+    cmds:
+      - rm -rf vendor/*
+      - docker cp $(CONTAINER_ID):/code/vendor ./vendor
+      - echo '"one sync vendor!'
+
+  phpstan:
+    cmd: docker compose exec app bash -c "vendor/bin/phpstan analyse"
+
+  phpcs_domain:
+    cmd: docker compose exec app bash -c "vendor/bin/phpcs --config-set show_warnings 0 && vendor/bin/phpcs domain"

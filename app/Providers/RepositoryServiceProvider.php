@@ -16,6 +16,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public $bindings = [
         Domain\AdminUser\AdminUserRepository::class => EloquentRepository\AdminUserRepository::class,
         Domain\News\NewsRepository::class => EloquentRepository\NewsRepository::class,
+        Domain\ReleaseFlag\ReleaseFlagRepository::class => EloquentRepository\ReleaseFlagRepository::class,
     ];
 
     /**
