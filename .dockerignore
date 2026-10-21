@@ -7,4 +7,5 @@
 .php-cs-fixer.cache
 node_modules
 storage/logs/*
+!storage/logs/.gitignore
 vendor
