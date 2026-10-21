@@ -14,7 +14,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.admin.rule=Host(`admin.localhost`)"
   js:
-    image: node:22.11.0-slim
+    image: node:22.23.4-slim
     working_dir: /code
     command: ["sh", "-c", "yarn install && yarn dev"]
     volumes:
@@ -28,7 +28,7 @@ services:
       - "traefik.http.routers.nw-hmr.rule=Host(`hmr.nw.localhost`)"
       - "traefik.http.routers.admin-hmr.rule=Host(`hmr.admin.localhost`)"
   db:
-    image: mysql:9.1.0
+    image: mysql:9.7.2
     volumes:
       - db-store:/var/lib/mysql
       - ./docker/db/init.sql:/docker-entrypoint-initdb.d/0.sql
