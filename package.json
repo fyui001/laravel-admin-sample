@@ -8,13 +8,17 @@
     },
     "dependencies": {
         "open-iconic": "^1.1.1",
-        "rice-ball": "^1.0.3",
-        "sass": "^1.72.0"
+        "sass": "^1.106.0"
     },
     "devDependencies": {
         "jquery": "^3.7.1",
-        "laravel-vite-plugin": "^1.0.0",
+        "laravel-vite-plugin": "^3.2.0",
         "rice-ball": "^1.0.3",
-        "vite": "^5.1.6"
+        "vite": "^8.3.0"
+    },
+    "resolutions": {
+        "**/vite-plugin-full-reload/picomatch": "^2.3.2",
+        "**/sass/source-map-js": "^1.2.2",
+        "**/ts-node/diff": "^4.0.4"
     }
 }
