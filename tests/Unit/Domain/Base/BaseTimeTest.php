@@ -21,14 +21,14 @@ class BaseTimeTest extends TestCase
     {
         $stringTime = '1993-03-16';
         $time = strtotime($stringTime);
-        $timeInstance = BaseTimeForTest::forStringTime($stringTime);
+        $timeInstance = BaseTimeStub::forStringTime($stringTime);
         $this->assertEquals(
             $time,
             $timeInstance->getRawValue(),
         );
 
         $this->expectException(InvalidArgumentException::class);
-        BaseTimeForTest::forStringTime('高田憂希');
+        BaseTimeStub::forStringTime('高田憂希');
     }
 
     public function testGetDisplay()
@@ -70,8 +70,4 @@ class BaseTimeTest extends TestCase
             $time->getSqlTimeStamp(),
         );
     }
-}
-
-class BaseTimeForTest extends BaseTime
-{
 }
