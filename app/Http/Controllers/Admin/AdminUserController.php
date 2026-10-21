@@ -74,7 +74,7 @@ class AdminUserController extends AppController
     /**
      * Update the user.
      *
-     * @param string $id
+     * @param AdminUser $adminUser
      * @param UpdateAdminUserRequest $request
      * @return RedirectResponse
      */
@@ -108,5 +108,4 @@ class AdminUserController extends AppController
             'success' => 'ユーザーを削除しました'
         ]);
     }
-
 }

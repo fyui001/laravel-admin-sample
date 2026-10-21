@@ -13,9 +13,9 @@ class ReleaseFlagManager
     private ReleaseFlagList $releaseFlagList;
 
     public function __construct(
-        readonly private ReleaseFlagDomainService $domainService,
+        private readonly ReleaseFlagDomainService $domainService,
     ) {
-        $this->releaseFlagList = ReleaseFlagList::makeEmpty();
+        $this->releaseFlagList = new ReleaseFlagList([]);
     }
 
     private function isEnabledByName(ReleaseFlagName $releaseFlagName): bool

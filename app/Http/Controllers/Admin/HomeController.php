@@ -14,10 +14,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
-
     }
 
     /**
@@ -25,9 +25,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(): View {
+    public function index(): View
+    {
 
         return view('top_page');
-
     }
 }

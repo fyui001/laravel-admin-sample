@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+!.env.testing
+.git
+.phpunit.cache
+.php-cs-fixer.cache
+node_modules
+storage/logs/*
+!storage/logs/.gitignore
+vendor

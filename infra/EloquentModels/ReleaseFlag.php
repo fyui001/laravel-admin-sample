@@ -8,7 +8,6 @@ use Domain\ReleaseFlag\IsEnabled;
 use Domain\ReleaseFlag\ReleaseFlag as ReleaseFlagDomain;
 use Domain\ReleaseFlag\ReleaseFlagName;
 
-
 /**
  * Infra\EloquentModels\ReleaseFlag
  *

@@ -12,7 +12,7 @@ use Domain\ReleaseFlag\ReleaseFlagName;
 class ReleaseFlagService
 {
     public function __construct(
-        readonly private ReleaseFlagDomainService $releaseFlagDomainService,
+        private readonly ReleaseFlagDomainService $releaseFlagDomainService,
     ) {
     }
 

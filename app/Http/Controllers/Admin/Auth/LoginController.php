@@ -76,18 +76,6 @@ class LoginController extends Controller
             'status' => AdminUserStatus::VALID->getValue()->getRawValue(),
         ];
 
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        if (
-            method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)
-        ) {
-            $this->fireLockoutEvent($request);
-
-            return $this->sendLockoutResponse($request);
-        }
-
         if (!Auth::guard('web')->attempt($credentials)) {
             return redirect()->intended(route('admin.auth.login'))->with(['error' => 'ログインIDまたはパスワードが違います']);
         }
@@ -105,5 +93,4 @@ class LoginController extends Controller
         Auth::guard('web')->logout();
         return redirect(route('admin.auth.login'));
     }
-
 }

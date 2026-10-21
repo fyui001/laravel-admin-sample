@@ -52,19 +52,24 @@ class AdminUser implements Authenticatable
         return 'id';
     }
 
+    public function getAuthPasswordName(): string
+    {
+        return 'password';
+    }
+
     public function getAuthPassword(): string
     {
         return $this->adminUser->getPassword()->getRawValue();
     }
 
-    public function getRememberToken()
+    public function getRememberToken(): ?string
     {
-        // do noting
+        return null;
     }
 
-    public function getRememberTokenName()
+    public function getRememberTokenName(): string
     {
-        // do noting
+        return '';
     }
     public function setRememberToken($value)
     {

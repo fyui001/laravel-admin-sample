@@ -8,7 +8,6 @@ use Domain\Base\BaseEnum;
 use Domain\Common\ListValue;
 use Domain\Common\RawString;
 
-
 enum AdminUserRole: string implements BaseEnum
 {
     case SYSTEM = 'SYSTEM';

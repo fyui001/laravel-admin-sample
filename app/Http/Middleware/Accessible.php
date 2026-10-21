@@ -31,7 +31,7 @@ class Accessible
     /**
      *
      *
-     * @param int $roleId
+     * @param string $roleId
      * @return array
      */
     protected function getAccessibleRoutes(string $roleId): array

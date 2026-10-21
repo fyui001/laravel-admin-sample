@@ -22,7 +22,7 @@ class AdminUserProvider implements UserProvider
     ) {
     }
 
-    public function retrieveByCredentials(array $credentials): Adminuser | null
+    public function retrieveByCredentials(array $credentials): AdminUser | null
     {
         if (!isset($credentials['user_id'])) {
             return null;
@@ -60,9 +60,9 @@ class AdminUserProvider implements UserProvider
         $this->adminUserRepository = $adminUserRepository;
     }
 
-    public function retrieveByToken($identifier, $token)
+    public function retrieveByToken($identifier, $token): ?Authenticatable
     {
-        // do noting
+        return null;
     }
 
     public function updateRememberToken(Authenticatable $user, $token)
@@ -73,5 +73,10 @@ class AdminUserProvider implements UserProvider
     public function validateCredentials(Authenticatable $user, array $credentials): bool
     {
         return $user->checkPassword($this->hasher, new RawPassword($credentials['password']));
+    }
+
+    public function rehashPasswordIfRequired(Authenticatable $user, array $credentials, bool $force = false): void
+    {
+        // do noting
     }
 }

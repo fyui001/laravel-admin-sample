@@ -42,14 +42,14 @@ class DataBaseQueryLoggerServiceProvider extends ServiceProvider
                     } elseif ($binding === null) {
                         $binding = 'NULL';
                     } elseif ($binding instanceof Carbon) {
-                        $binding = "'{$binding->timezone(env('TZ'))->toDateTimeString()}'";
+                        $binding = "'{$binding->timezone(config('app.timezone'))->toDateTimeString()}'";
                     } elseif ($binding instanceof DateTime) {
-                        $binding = "'{$binding->setTimezone(env('TZ'))->format('Y-m-d H:i:s')}'";
+                        $binding = "'{$binding->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s')}'";
                     }
                     $sql = preg_replace('/\\?/', $binding, $sql, 1);
                 }
                 \Log::info($sql);
-                \Log::channel('sql')->info('[ROUTE]' . $route );
+                \Log::channel('sql')->info('[ROUTE]' . $route);
                 \Log::channel('sql')->info('[QUERY]' . $sql);
                 \Log::channel('sql')->info('[TIME]' . "time(ms):{$query->time}" . PHP_EOL);
             });
