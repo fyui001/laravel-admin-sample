@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Infra\EloquentRepository;
 
 use Domain\Exception\NotFoundException;
@@ -11,7 +10,6 @@ use Domain\ReleaseFlag\ReleaseFlagList;
 use Domain\ReleaseFlag\ReleaseFlagName;
 use Domain\ReleaseFlag\ReleaseFlagRepository as ReleaseFlagRepositoryInterface;
 use Infra\EloquentModels\ReleaseFlag as ReleaseFlagModel;
-
 
 class ReleaseFlagRepository implements ReleaseFlagRepositoryInterface
 {
@@ -33,7 +31,7 @@ class ReleaseFlagRepository implements ReleaseFlagRepositoryInterface
         $collection = ReleaseFlagModel::whereIn('name', ReleaseFlagName::getValueList()->toArray())->get();
 
         return new ReleaseFlagList($collection->map(
-            fn(ReleaseFlagModel $model) => $model->toDomain()
+            fn (ReleaseFlagModel $model) => $model->toDomain()
         )->toArray());
     }
 
@@ -42,7 +40,7 @@ class ReleaseFlagRepository implements ReleaseFlagRepositoryInterface
         $collection = ReleaseFlagModel::where(['is_enabled' => true])->get();
 
         return new ReleaseFlagList($collection->map(
-            fn(ReleaseFlagModel $model) => $model->toDomain()
+            fn (ReleaseFlagModel $model) => $model->toDomain()
         )->toArray());
     }
 

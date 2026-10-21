@@ -58,14 +58,11 @@ class NewsController extends AppController
      */
     public function store(CreateNewsRequest $request): RedirectResponse
     {
-        $result = $this->newsService->createNews(
+        $this->newsService->createNews(
             $request->getTitle(),
             $request->getContent(),
             $request->getStatus(),
         );
-        if (empty($result)) {
-            return  redirect(route('admin.news.index'))->with(['error' => 'ニュースを作成できませんでした']);
-        }
 
         return redirect(route('admin.news.index'))->with(['success' => 'ニュースを作成しました']);
     }

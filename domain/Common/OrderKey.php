@@ -11,7 +11,7 @@ enum OrderKey: string
 
     public function displayName(): RawString
     {
-        return match($this) {
+        return match ($this) {
             self::ASC => new RawString('昇順'),
             self::DESC => new RawString('降順'),
         };

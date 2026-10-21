@@ -35,7 +35,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         /** @var Collection $collection */
         $collection = AdminUser::get();
 
-        return new AdminUserList($collection->map(function(AdminUser $model) {
+        return new AdminUserList($collection->map(function (AdminUser $model) {
             return $model->toDomain();
         })->toArray());
     }

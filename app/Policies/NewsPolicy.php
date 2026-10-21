@@ -9,7 +9,6 @@ use Infra\EloquentModels\AdminUser;
 
 class NewsPolicy
 {
-
     /**
      * Determine if the current user can create news
      *

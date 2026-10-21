@@ -6,7 +6,6 @@ namespace Domain\News;
 
 readonly class News
 {
-
     public function __construct(
         private NewsId $id,
         private Title $title,

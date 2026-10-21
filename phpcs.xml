@@ -6,9 +6,19 @@
 
     <rule ref="PSR12" />
 
+    <!-- ide-helper:models が生成する docblock は折り返さない -->
+    <rule ref="Generic.Files.LineLength">
+        <exclude-pattern>/infra/EloquentModels/</exclude-pattern>
+    </rule>
+
     <arg name="colors" />
 
     <arg value="ps" />
+
+    <file>app</file>
+    <file>domain</file>
+    <file>infra</file>
+    <file>tests</file>
 
     <!-- List of directories to exclude -->
     <exclude-pattern>/bootstrap/</exclude-pattern>
@@ -22,5 +32,4 @@
     <exclude-pattern>/vendor/</exclude-pattern>
     <exclude-pattern>/server.php</exclude-pattern>
     <exclude-pattern>/app/Console/Kernel.php</exclude-pattern>
-    <exclude-pattern>/tests/CreatesApplication.php</exclude-pattern>
 </ruleset>

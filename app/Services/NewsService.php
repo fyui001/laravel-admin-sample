@@ -12,7 +12,6 @@ use Domain\News\NewsDomainService;
 use Domain\News\NewsId;
 use Domain\News\Status;
 use Domain\News\Title;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsService
 {
@@ -31,7 +30,7 @@ class NewsService
     /**
      * Get all news.
      *
-     * @return LengthAwarePaginator
+     * @return NewsPaginator
      */
     public function getNewsList(Paginate $paginate): NewsPaginator
     {
