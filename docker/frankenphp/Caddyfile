@@ -1,0 +1,33 @@
+{
+	admin off
+	auto_https off
+
+	log {
+		output stderr
+	}
+
+	servers {
+		timeouts {
+			read_header 60s
+			read_body 60s
+			write 60s
+			idle 180s
+		}
+	}
+}
+
+:80 {
+	root /code/public
+
+	log {
+		output stderr
+	}
+
+	header X-Frame-Options SAMEORIGIN
+
+	request_body {
+		max_size 2GB
+	}
+
+	php_server
+}
