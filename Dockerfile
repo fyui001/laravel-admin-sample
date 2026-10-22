@@ -78,8 +78,9 @@ RUN apt-get update && \
     libpcre2-8-0 \
     default-mysql-client
 
+# opcache is built into PHP 8.5 and can no longer be built as a shared extension
 RUN export MAKEFLAGS="-j$(nproc)" && \
-    docker-php-ext-install -j$(nproc) bcmath intl pdo_mysql opcache
+    docker-php-ext-install -j$(nproc) bcmath intl pdo_mysql
 
 COPY docker/unit/config.json /docker-entrypoint.d/
 
