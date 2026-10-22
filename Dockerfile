@@ -1,7 +1,7 @@
 FROM composer:2.10.3 AS composer-base
 
 ## NGINX Unit 1.35.0 built from source on a patched PHP (the official unit:php8.4 image ships an unpatched PHP)
-FROM php:8.4.27-cli-bookworm AS unit-build
+FROM php:8.5.12-cli-bookworm AS unit-build
 
 ARG UNIT_VERSION=1.35.0
 
@@ -40,12 +40,13 @@ RUN set -ex && \
     make -j "${NCPU}" unitd && \
     install -pm755 build/sbin/unitd /usr/sbin/unitd && \
     make clean && \
-    ./configure ${CONFIGURE_ARGS} --cc-opt="${CC_OPT}" --modulesdir=/usr/lib/unit/modules && \
+    # PHP 8.5 added pre_request_init to sapi_module_struct; Unit 1.35.0 (archived upstream) initializes it positionally, so the missing (NULL) initializer must not be an error
+    ./configure ${CONFIGURE_ARGS} --cc-opt="${CC_OPT} -Wno-error=missing-field-initializers" --modulesdir=/usr/lib/unit/modules && \
     ./configure php && \
     make -j "${NCPU}" php-install
 
 ## base image: patched PHP + Unit
-FROM php:8.4.27-cli-bookworm AS base
+FROM php:8.5.12-cli-bookworm AS base
 
 COPY --from=unit-build /usr/sbin/unitd /usr/sbin/unitd
 COPY --from=unit-build /usr/lib/unit/modules/ /usr/lib/unit/modules/
@@ -77,8 +78,9 @@ RUN apt-get update && \
     libpcre2-8-0 \
     default-mysql-client
 
+# opcache is built into PHP 8.5 and can no longer be built as a shared extension
 RUN export MAKEFLAGS="-j$(nproc)" && \
-    docker-php-ext-install -j$(nproc) bcmath intl pdo_mysql opcache
+    docker-php-ext-install -j$(nproc) bcmath intl pdo_mysql
 
 COPY docker/unit/config.json /docker-entrypoint.d/
 
