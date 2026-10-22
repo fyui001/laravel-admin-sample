@@ -1,5 +1,8 @@
 # セットアップ
-Makefileにコマンドをまとめてます
+Taskfileにコマンドをまとめてます
+
+アプリのコンテナは FrankenPHP(classic mode)で動きます。
+ウェブサーバの設定は `docker/frankenphp/Caddyfile`、PHP の設定は `docker/php/zz-custom.ini` にあります。
 
 1. dotenvとdocker composeファイルの初期化
 
